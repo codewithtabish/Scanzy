@@ -12,6 +12,7 @@ import { useTheme } from 'next-themes'
 // import { dark } from '@clerk/themes'
 import { Upload } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { ModeToggle } from './theme-toggle'
 
 const sections = ['hero-section', 'how-it-work', 'feature', 'feedbacks','pricing']
 
@@ -93,7 +94,12 @@ const Header = () => {
             height={40}
             className="object-cover w-10 h-10"
           />
-          <h1 className="font-bold text-lg">SUMMARIZER</h1>
+          <h1 className="font-bold text-lg">SCA
+            <span className='italic text-primary'>N</span>zy -
+            <strong className='ml-1  px-2 text-sm rotate-180 italic rounded-md '>
+                AI 
+            </strong>
+          </h1>
         </Link>
 
         {/* Desktop Menu */}
@@ -132,7 +138,7 @@ const Header = () => {
           </Button>
 
           </SignedIn> */}
-        {/* <ThemeModeToggle /> */}
+        <ModeToggle/>
         <div>
   {/* When user is signed in */}
   {/* <SignedIn> */}
