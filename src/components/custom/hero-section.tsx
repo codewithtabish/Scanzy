@@ -30,7 +30,7 @@ export default function Hero() {
         transition={{ duration: 1, delay: 0.6 }}
         className="relative z-10 container mx-auto px-4 text-center"
       >
-        <h1 className="mb-6 text-4xl md:max-w-[70%] md:pt-44 mx-auto font-bold tracking-tight sm:text-5xl md:text-6xl leading-tight">
+        <h1 className="mb-6 text-4xl md:max-w-[70%] md:pt-44 pt-56 mx-auto font-bold tracking-tight sm:text-5xl md:text-6xl leading-tight">
           Make{" "}
           <span className="relative whitespace-nowrap text-primary">
             <svg
