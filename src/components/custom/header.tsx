@@ -4,25 +4,25 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-// import { ThemeModeToggle } from './mode-toggle-button'
 import Link from 'next/link'
-// import { SignedIn, SignedOut, SignInButton,  UserButton } from '@clerk/nextjs'
 import { Badge } from '../ui/badge'
 import { useTheme } from 'next-themes'
-// import { dark } from '@clerk/themes'
-import { Upload } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { ModeToggle } from './theme-toggle'
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
+import { Boxes } from 'lucide-react'
 
-const sections = ['hero-section', 'how-it-work', 'feature', 'feedbacks','pricing']
+const sections = ['hero-section', 'how-it-work', 'feature', 'feedbacks', 'pricing']
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('hero-section')
   const [menuOpen, setMenuOpen] = useState(false)
-  const { resolvedTheme } = useTheme();
-//   const clerkTheme = resolvedTheme === 'dark' ? dark : undefined;
-  const pathName=usePathname()
+  const [showFeatureMenu, setShowFeatureMenu] = useState(false)
+  const { resolvedTheme } = useTheme()
+  const clerkTheme = resolvedTheme === 'dark' ? dark : undefined
+  const pathName = usePathname()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,8 +85,7 @@ const Header = () => {
           isScrolled ? 'max-w-4xl border-2 rounded-full p-5 mt-10' : 'max-w-6xl'
         } transition-all duration-300 py-4 md:px-4 px-6`}
       >
-        {/* Logo */}
-        <Link href={'/'} className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/images/header-logo.png"
             alt="header-logo"
@@ -94,82 +93,121 @@ const Header = () => {
             height={40}
             className="object-cover w-10 h-10"
           />
-          <h1 className="font-bold text-lg">SCA
-            <span className='italic text-primary'>N</span>zy -
-            <strong className='ml-1  px-2 text-sm rotate-180 italic rounded-md '>
-                AI 
-            </strong>
+          <h1 className="font-bold text-lg">
+            SCA
+            <span className="italic text-primary">N</span>zy -
+            <strong className="ml-1 px-2 text-sm rotate-180 italic rounded-md">AI</strong>
           </h1>
         </Link>
 
-        {/* Desktop Menu */}
-       {
-        pathName=='/'&&
-         <div className="hidden md:flex items-center gap-6 text-sm">
-          {sections.map((id) => (
-            <motion.a
-              key={id}
-              href={`#${id}`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`hover:text-primary ${
-                activeSection === id ? 'text-primary font-semibold' : ''
-              } ${id === 'hero-section' ? 'px-4 py-1 rounded-full border ' +
-                (activeSection === 'hero-section'
-                  ? 'border-primary'
-                  : 'border-transparent') : ''}`}
-            >
-              {id
-                .replace(/-/g, ' ')
-                .replace(/\b\w/g, (char) => char.toUpperCase())}
-            </motion.a>
-          ))}
-        </div>
-       }
+        {pathName === '/' && (
+          <div className="hidden md:flex items-center gap-6 text-sm">
+            {sections.map((id) =>
+              id === 'feature' ? (
+                <div
+                  key={id}
+                  className="relative"
+                  onMouseEnter={() => setShowFeatureMenu(true)}
+                  onMouseLeave={() => setShowFeatureMenu(false)}
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    className={`hover:text-primary font-semibold text-sm text-foreground flex items-center gap-1`}
+                  >
+                    Features
+                    {showFeatureMenu && (
+                      <Badge variant="outline" className="text-[10px] border-pink-400 text-pink-600">
+                        Pro
+                      </Badge>
+                    )}
+                  </motion.button>
 
-        {/* Actions */}
+                  {showFeatureMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 mt-2 z-50 w-[380px] bg-white dark:bg-neutral-900 rounded-xl shadow-xl overflow-hidden"
+                    >
+                      <div className="grid grid-cols-2">
+                        {/* Left Panel */}
+                        <div className="bg-pink-50 dark:bg-pink-100/10 p-6 rounded-l-xl">
+                          <Boxes className="text-pink-500 mb-4" />
+                          <h3 className="font-bold text-lg">AI-Powered Automation</h3>
+                          <p className="text-muted-foreground text-sm mt-2">
+                            Streamline your workflow with intelligent automation.
+                          </p>
+                        </div>
+
+                        {/* Right Panel */}
+                        <div className="flex flex-col gap-5 p-6 bg-white dark:bg-neutral-900">
+                          {[
+                            {
+                              title: 'Task Automation',
+                              desc: 'Automate repetitive tasks and save time.',
+                            },
+                            {
+                              title: 'Workflow Optimization',
+                              desc: 'Optimize your processes with AI-driven insights.',
+                            },
+                            {
+                              title: 'Intelligent Scheduling',
+                              desc: 'AI-powered scheduling for maximum efficiency.',
+                            },
+                          ].map((item, i) => (
+                            <motion.div
+                              whileHover={{ scale: 1.03 }}
+                              whileTap={{ scale: 0.97 }}
+                              key={i}
+                              className="transition rounded-md hover:bg-accent p-3"
+                            >
+                              <h4 className="font-semibold text-sm">{item.title}</h4>
+                              <p className="text-sm text-muted-foreground">{item.desc}</p>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              ) : (
+                <motion.a
+                  key={id}
+                  href={`#${id}`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`hover:text-primary ${
+                    activeSection === id ? 'text-primary font-semibold' : ''
+                  } ${id === 'hero-section' ? 'px-4 py-1 rounded-full border ' +
+                    (activeSection === 'hero-section'
+                      ? 'border-primary'
+                      : 'border-transparent') : ''}`}
+                >
+                  {id.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
+                </motion.a>
+              )
+            )}
+          </div>
+        )}
+
         <div className="hidden md:flex gap-6 items-center">
-          {/* <SignedIn>
-          <Button size="sm" variant={'ghost'} className='border-[1px] p-1  px-3'>
-            <Link href={'/upload'}>
-            <Upload/>
-            </Link>
-            
-          </Button>
-
-          </SignedIn> */}
-        <ModeToggle/>
-        <div>
-  {/* When user is signed in */}
-  {/* <SignedIn> */}
-    {/* <UserButton  */}
-    {/* // appearance={{baseTheme:clerkTheme}} */}
-    {/* /> */}
-    {/* <SignOutButton>
-      <Badge className='cursor-pointer' variant='outline'>
-        <span>Logout</span>
-      </Badge>
-    </SignOutButton> */}
-  {/* </SignedIn> */}
-
-  {/* When user is signed out */}
-  {/* <SignedOut>
-    <SignInButton>
-      <Badge className='cursor-pointer' variant='outline'>
-        <span>Login</span>
-      </Badge>
-    </SignInButton>
-  </SignedOut> */}
-</div>
-          {/* check if login or logout */}
-   
+          <SignedIn />
+          <ModeToggle />
+          <div>
+            <SignedIn>
+              <UserButton appearance={{ baseTheme: clerkTheme }} />
+            </SignedIn>
+            <SignedOut>
+              <SignInButton>
+                <Badge className="cursor-pointer" variant="outline">
+                  <span>Login</span>
+                </Badge>
+              </SignInButton>
+            </SignedOut>
+          </div>
         </div>
-
-
-        {/* Mobile Theme Toggle */}
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-black shadow-md border-t border-gray-200 dark:border-gray-800">
           <div className="flex flex-col px-6 py-4 space-y-3 text-sm">
@@ -182,9 +220,7 @@ const Header = () => {
                 }`}
                 onClick={() => setMenuOpen(false)}
               >
-                {id
-                  .replace(/-/g, ' ')
-                  .replace(/\b\w/g, (char) => char.toUpperCase())}
+                {id.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
               </a>
             ))}
             <Button size="sm" className="w-full">
