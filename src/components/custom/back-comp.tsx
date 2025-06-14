@@ -5,11 +5,14 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function BackButton({
-  label = 'Go Back',
-  position = 'top-6 cursor-pointer left-10',
+  label = '',
+  position = 'top-6 cursor-pointer  left-10',
+  bg='bg-gray-400',
 }: {
   label?: string;
   position?: string;
+    bg?: string;
+
 }) {
   const router = useRouter();
 
@@ -18,9 +21,9 @@ export default function BackButton({
       <Button
         variant="outline"
         onClick={() => router.back()}
-        className="flex items-center"
+        className="flex  bg cursor-pointer  justify-center items-center rounded-md w-10 h-6"
       >
-        <ArrowLeft className="h-4 w-4 mr-2" />
+        <ArrowLeft className="h-4 w-8 text-white" />
         <span>{label}</span>
       </Button>
     </div>
