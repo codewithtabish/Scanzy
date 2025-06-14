@@ -1,5 +1,6 @@
 'use client';
 
+import BackButton from '@/components/custom/back-comp';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,6 +56,7 @@ const faqs = [
 export default function HelpCenterPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-16">
+        <BackButton/>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
