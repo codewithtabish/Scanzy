@@ -1,66 +1,60 @@
 'use client';
 
-import Link from "next/link";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import { Button } from '../ui/button';
+import { fadeUp, scaleIn } from './animation';
 
 export default function Hero() {
   return (
-    <section className="w-full  flex items-center justify-center min-h-screen relative overflow-hidden">
-      {/* Overlay */}
-      <div className="absolute inset-0 z-0" />
+    <section
+      id="hero"
+      className="relative flex flex-col items-center justify-center min-h-screen px-4 text-center overflow-hidden"
+    >
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br  z-0" />
 
-      {/* Badge */}
+      {/* Tagline Badge */}
       <motion.div
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute top-36 left-1/2 transform -translate-x-1/2 z-20"
+        {...fadeUp}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="z-10 mb-4"
       >
-        <Badge variant="outline" className="text-primary px-4 py-2 text-sm backdrop-blur">
-          ✨ Jetson AI – AI & Plagiarism Detection SaaS 
-        </Badge>
-      </motion.div>
-
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.6 }}
-        className="relative z-10 container mx-auto px-4 text-center"
-      >
-        <h1 className="mb-6 text-4xl md:max-w-[70%] md:pt-44 pt-56 mx-auto font-bold tracking-tight sm:text-5xl md:text-6xl leading-tight">
-          Make{" "}
-          <span className="relative whitespace-nowrap text-primary">
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 418 42"
-              className="absolute top-2/3 left-0 h-[0.58em] w-full fill-pink-400/70 dark:fill-pink-300/60"
-              preserveAspectRatio="none"
-            >
-              <path d="..." />
-            </svg>
-            <span className="relative">Detection Smarter again</span>
-          </span>{" "}
-          with SCANZY AI
-        </h1>
-
-        <p className="mx-auto mb-8 max-w-2xl text-lg">
-          Experience fast, accurate AI-generated content detection and plagiarism analysis in one powerful SaaS...
+        <p className="inline-block px-4 py-1 text-sm font-medium text-primary bg-primary/10 rounded-full backdrop-blur">
+          AI-Powered Content Verification Platform
         </p>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="flex justify-center md:max-w-1/2 mx-auto mt-8"
-        >
-          <Button className="md:w-1/2 cursor-pointer">Get Started</Button>
-        </motion.div>
       </motion.div>
 
-    
+      {/* Hero Heading */}
+      <motion.h1
+        {...fadeUp}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="z-10 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight max-w-4xl leading-tight"
+      >
+        Build Trust with <span className="text-primary">Authentic Content</span>
+      </motion.h1>
+
+      {/* Hero Subtext */}
+      <motion.p
+        {...fadeUp}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        className="z-10 mt-6 max-w-2xl text-base sm:text-lg text-gray-600 dark:text-gray-300"
+      >
+        Scanzy AI uses cutting-edge AI to identify plagiarized and machine-generated text in seconds—trusted by educators, publishers, and global teams.
+      </motion.p>
+
+      {/* CTA Buttons */}
+      <motion.div
+        {...scaleIn}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="z-10 mt-8 flex flex-wrap gap-4 justify-center"
+      >
+        <Button className="px-6 py-3 text-base font-medium">
+          Start Free Scan
+        </Button>
+        <Button variant="outline" className="px-6 py-3 text-base font-medium">
+          Request a Demo
+        </Button>
+      </motion.div>
     </section>
   );
 }

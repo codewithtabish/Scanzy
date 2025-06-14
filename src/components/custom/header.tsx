@@ -53,6 +53,13 @@ const Header = () => {
     return () => observer.disconnect()
   }, [])
 
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
   useEffect(() => {
     const setInitialActiveSection = () => {
       for (const id of sections) {
@@ -112,7 +119,10 @@ const Header = () => {
                 >
                   <motion.button
                     whileHover={{ scale: 1.05 }}
-                    className={`hover:text-primary font-semibold text-sm text-foreground flex items-center gap-1`}
+                    onClick={() => scrollToSection('feature')}
+                    className={`hover:text-primary font-semibold text-sm flex items-center gap-1 ${
+                      activeSection === 'feature' ? 'text-primary' : 'text-foreground'
+                    }`}
                   >
                     Features
                     {showFeatureMenu && (
@@ -122,66 +132,28 @@ const Header = () => {
                     )}
                   </motion.button>
 
-                  {showFeatureMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 z-50 w-[380px] bg-white dark:bg-neutral-900 rounded-xl shadow-xl overflow-hidden"
-                    >
-                      <div className="grid grid-cols-2">
-                        {/* Left Panel */}
-                        <div className="bg-pink-50 dark:bg-pink-100/10 p-6 rounded-l-xl">
-                          <Boxes className="text-pink-500 mb-4" />
-                          <h3 className="font-bold text-lg">AI-Powered Automation</h3>
-                          <p className="text-muted-foreground text-sm mt-2">
-                            Streamline your workflow with intelligent automation.
-                          </p>
-                        </div>
-
-                        {/* Right Panel */}
-                        <div className="flex flex-col gap-5 p-6 bg-white dark:bg-neutral-900">
-                          {[
-                            {
-                              title: 'Task Automation',
-                              desc: 'Automate repetitive tasks and save time.',
-                            },
-                            {
-                              title: 'Workflow Optimization',
-                              desc: 'Optimize your processes with AI-driven insights.',
-                            },
-                            {
-                              title: 'Intelligent Scheduling',
-                              desc: 'AI-powered scheduling for maximum efficiency.',
-                            },
-                          ].map((item, i) => (
-                            <motion.div
-                              whileHover={{ scale: 1.03 }}
-                              whileTap={{ scale: 0.97 }}
-                              key={i}
-                              className="transition rounded-md hover:bg-accent p-3"
-                            >
-                              <h4 className="font-semibold text-sm">{item.title}</h4>
-                              <p className="text-sm text-muted-foreground">{item.desc}</p>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
+               
                 </div>
               ) : (
                 <motion.a
                   key={id}
                   href={`#${id}`}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    scrollToSection(id)
+                  }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`hover:text-primary ${
                     activeSection === id ? 'text-primary font-semibold' : ''
-                  } ${id === 'hero-section' ? 'px-4 py-1 rounded-full border ' +
-                    (activeSection === 'hero-section'
-                      ? 'border-primary'
-                      : 'border-transparent') : ''}`}
+                  } ${
+                    id === 'hero-section'
+                      ? 'px-4 py-1 rounded-full border ' +
+                        (activeSection === 'hero-section'
+                          ? 'border-primary'
+                          : 'border-transparent')
+                      : ''
+                  }`}
                 >
                   {id.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                 </motion.a>
@@ -218,7 +190,11 @@ const Header = () => {
                 className={`${
                   activeSection === id ? 'text-orange-600 font-semibold' : ''
                 }`}
-                onClick={() => setMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection(id)
+                  setMenuOpen(false)
+                }}
               >
                 {id.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
               </a>

@@ -36,7 +36,7 @@ export default function RootLayout ({
             enableSystem
             disableTransitionOnChange
           >
-            <main className='  dark:text-gray-200'>
+            <main className='  dark:text-gray-300'>
               {children}
             </main>
           </ThemeProvider>
