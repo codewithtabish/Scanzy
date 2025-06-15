@@ -1,3 +1,5 @@
+'use server'
+import { checkAuthAndRedirect } from '@/actions/auth-redirect'
 import { AnimatedBeamDemo } from '@/components/custom/animated-beams'
 import CallToAction from '@/components/custom/call-to-action'
 import FAQ from '@/components/custom/faq'
@@ -13,7 +15,8 @@ import Pricing from '@/components/custom/pricing'
 import StatsSection from '@/components/custom/state-section'
 import React from 'react'
 
-const HomePage = () => {
+const HomePage = async() => {
+  // await checkAuthAndRedirect()
   return (
     <div className='md:max-w-6xl mx-auto md:px-3 px-5'>
 
