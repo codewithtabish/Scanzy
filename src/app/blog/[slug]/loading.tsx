@@ -1,28 +1,29 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BlogLoading() {
   return (
-    <div className="container mx-auto px-4 py-10 space-y-6">
-      {/* Title */}
-      <Skeleton className="h-10 w-3/4 rounded-md" />
+    <div className="md:max-w-3xl mx-auto px-4 py-10">
+      {/* Banner image skeleton */}
+      <Skeleton className="w-full h-[400px] rounded-lg mb-6" />
 
-      {/* Banner Image */}
-      <Skeleton className="h-[400px] w-full rounded-lg" />
+      {/* Title skeleton */}
+      <Skeleton className="h-10 w-3/4 mb-4" />
 
-      {/* Description */}
-      <Skeleton className="h-6 w-2/3 mt-6" />
+      {/* Description skeleton */}
+      <Skeleton className="h-6 w-full mb-4" />
+      <Skeleton className="h-6 w-5/6 mb-6" />
 
-      {/* Content Skeletons */}
-      <div className="space-y-4 mt-8">
-        <Skeleton className="h-5 w-full" />
-        <Skeleton className="h-5 w-11/12" />
-        <Skeleton className="h-5 w-10/12" />
-        <Skeleton className="h-64 w-full rounded-md" />
-        <Skeleton className="h-5 w-2/3" />
-        <Skeleton className="h-5 w-1/2" />
-        <Skeleton className="h-5 w-3/4" />
+      {/* Content blocks skeleton */}
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-11/12" />
+        <Skeleton className="h-6 w-3/4" />
+        <Skeleton className="h-[300px] w-full rounded-md" /> {/* Simulate content image */}
+        <Skeleton className="h-6 w-5/6" />
+        <Skeleton className="h-6 w-full" />
+        <Skeleton className="h-6 w-2/3" />
       </div>
     </div>
   );

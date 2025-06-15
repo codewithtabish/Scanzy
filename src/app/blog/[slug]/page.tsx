@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getBlogBySlug } from "@/actions/blogs";
+import ContentRenderer from "@/components/custom/blog/render-comp";
 
 function renderRichContent(blocks: any[]) {
   return blocks.map((block: any, i: number) => {
@@ -23,69 +24,111 @@ function renderRichContent(blocks: any[]) {
     }
 
     if (!block.children) return null;
-    const text = block.children.map((c: any) => c.text).join("").trim();
-    if (!text || text === "---") return null;
+    const rawText = block.children.map((c: any) => c.text).join("\n").trim();
+    if (!rawText || rawText === "---") return null;
 
-    if (text.startsWith("### ")) {
-      return <h3 key={i} className="text-xl font-semibold mt-6 mb-2">{text.replace("### ", "")}</h3>;
-    }
-    if (text.startsWith("## ")) {
-      return <h2 key={i} className="text-2xl font-bold mt-8 mb-3">{text.replace("## ", "")}</h2>;
-    }
-    if (text.startsWith("# ")) {
-      return <h1 key={i} className="text-3xl font-bold mt-10 mb-4">{text.replace("# ", "")}</h1>;
-    }
+    // Headings
+    if (/^###\s/.test(rawText)) return <h3 key={i} className="text-xl font-semibold mt-6 mb-2">{rawText.replace(/^###\s/, "")}</h3>;
+    if (/^##\s/.test(rawText)) return <h2 key={i} className="text-2xl font-bold mt-8 mb-3">{rawText.replace(/^##\s/, "")}</h2>;
+    if (/^#\s/.test(rawText)) return <h1 key={i} className="text-3xl font-bold mt-10 mb-4">{rawText.replace(/^#\s/, "")}</h1>;
 
-    if (/^(Mistake\s*#\d+:|Conclusion|Why AI Isn't Working for You)/i.test(text)) {
-      return <h2 key={i} className="text-2xl font-bold mt-8 mb-3">{text}</h2>;
-    }
-
-    if (text.startsWith("> ")) {
+    // Blockquote
+    if (rawText.startsWith("> ")) {
       return (
-        <blockquote key={i} className="border-l-4 border-gray-400 pl-4 italic text-gray-600 dark:text-gray-300 my-4">
-          {text.replace(/^>\s*/, "")}
+        <blockquote
+          key={i}
+          className="border-l-4 border-gray-400 pl-4 italic text-gray-600 dark:text-gray-300 my-4"
+        >
+          {rawText.replace(/^>\s*/, "")}
         </blockquote>
       );
     }
 
-    // Handle full code blocks
-    if (/^```[\s\S]*```$/.test(text)) {
-      const langMatch = text.match(/^```(\w+)?\n([\s\S]*?)```$/);
-      const lang = langMatch?.[1] || "";
-      const code = langMatch?.[2] || text.replace(/```/g, "");
-      return (
-        <pre key={i} className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4">
-          <code className={`language-${lang}`}>{code}</code>
-        </pre>
-      );
-    }
+    // Multi-line Code Block: ```js\ncode\n```
+// Multi-line code block (```lang\n...\n```)
+if (/^```/.test(rawText)) {
+  const match = rawText.match(/^```([a-zA-Z0-9]+)?\s*\n?([\s\S]*?)\n?```$/);
+  const lang = match?.[1] || "text";
+  const code = match?.[2]?.trim() || rawText.replace(/```/g, "").trim();
 
-    // Bullet list
-    if (/^(\*|\-)\s/.test(text)) {
-      const items = text.split(/(?:\r?\n)?(?:\*|\-)\s+/).filter(Boolean);
+  return (
+    <pre
+      key={i}
+      className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
+      style={{
+        fontFamily: "monospace",
+        whiteSpace: "pre", // ✅ THIS ensures spacing & line breaks work
+        margin: 0,
+      }}
+    >
+      <code className={`language-${lang}`} style={{ display: "block" }}>
+        {code}
+      </code>
+    </pre>
+  );
+}
+
+
+// One-liner with language hint (e.g., js\ncode)
+const oneLineLangMatch = rawText.match(/^(js|ts|python|html|css|json|bash|sh)\n(.+)/i);
+if (oneLineLangMatch) {
+  const [, lang, code] = oneLineLangMatch;
+
+  return (
+    <pre
+      key={i}
+      className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
+      style={{
+        whiteSpace: "pre-wrap",
+        wordBreak: "break-word",
+        fontFamily: "monospace",
+      }}
+    >
+      <code className={`language-${lang}`} style={{ whiteSpace: "pre-wrap" }}>
+        {code}
+      </code>
+    </pre>
+  );
+}
+
+// Inline `code` block inside paragraph
+if (/^`[^`]+`$/.test(rawText)) {
+  const inlineCode = rawText.slice(1, -1);
+  return (
+    <p key={i} className="mb-4 leading-relaxed text-gray-800 dark:text-gray-300">
+      <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-sm">{inlineCode}</code>
+    </p>
+  );
+}
+
+  
+
+    // Bullet List
+    if (/^(\*|\-)\s+/.test(rawText)) {
+      const items = rawText.split(/(?:\r?\n)?(?:\*|\-)\s+/).filter(Boolean);
       return (
         <ul key={i} className="list-disc list-inside mb-4">
-          {items.map((item, idx) => (
-            <li key={idx}>{item}</li>
+          {items.map((item:any, idx:any) => (
+            <li key={idx}>{renderInlineMarkdown(item)}</li>
           ))}
         </ul>
       );
     }
 
-    // Numbered list
-    if (/^\d+\.\s/.test(text)) {
-      const items = text.split(/(?=\d+\.\s)/g);
+    // Numbered List
+    if (/^\d+\.\s/.test(rawText)) {
+      const items = rawText.split(/(?=\d+\.\s)/g);
       return (
         <ol key={i} className="list-decimal list-inside mb-4">
-          {items.map((item, idx) => (
-            <li key={idx}>{item.replace(/^\d+\.\s/, "")}</li>
+          {items.map((item:any, idx:any) => (
+            <li key={idx}>{renderInlineMarkdown(item.replace(/^\d+\.\s/, ""))}</li>
           ))}
         </ol>
       );
     }
 
-    // Inline image
-    const inlineImage = text.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+    // Inline Image
+    const inlineImage = rawText.match(/!\[([^\]]*)\]\(([^)]+)\)/);
     if (inlineImage) {
       const [, alt, src] = inlineImage;
       return (
@@ -93,54 +136,43 @@ function renderRichContent(blocks: any[]) {
           <Image
             src={src}
             alt={alt}
-            width={800}
-            height={400}
-            className="rounded-md w-full object-cover"
+            width={200}
+            height={200}
+            className="rounded-md  w-[200px] md:max-h-[200px] mx-auto object-cover"
           />
         </div>
       );
     }
 
-    // Handle links, bold, italic, inline code
-    const segments = text.split(/(\[.*?\]\(.*?\))/g).map((seg, idx) => {
-      const match = seg.match(/\[([^\]]+)\]\(([^)]+)\)/);
-      if (match) {
-        return (
-          <a
-            key={idx}
-            href={match[2]}
-            className="text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {match[1]}
-          </a>
-        );
-      }
-      return seg;
-    });
-
-    const parts = segments.flatMap((seg, idx) => {
-      if (typeof seg !== "string") return [seg];
-      return seg.split(/(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g).map((sub, j) => {
-        if (/^`[^`]+`$/.test(sub)) {
-          return <code key={`${idx}-${j}`} className="bg-gray-200 px-1 rounded">{sub.slice(1, -1)}</code>;
-        }
-        if (/^\*\*[^*]+\*\*$/.test(sub)) {
-          return <strong key={`${idx}-${j}`} className="font-semibold">{sub.slice(2, -2)}</strong>;
-        }
-        if (/^\*[^*]+\*$/.test(sub)) {
-          return <em key={`${idx}-${j}`} className="italic">{sub.slice(1, -1)}</em>;
-        }
-        return <React.Fragment key={`${idx}-${j}`}>{sub}</React.Fragment>;
-      });
-    });
-
+    // Fallback Paragraph
     return (
       <p key={i} className="mb-4 leading-relaxed text-gray-800 dark:text-gray-300">
-        {parts}
+        {renderInlineMarkdown(rawText)}
       </p>
     );
+  });
+}
+
+function renderInlineMarkdown(text: string) {
+  return text.split(/(\[.*?\]\(.*?\)|`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, i) => {
+    if (/^\*\*[^*]+\*\*$/.test(part)) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    if (/^\*[^*]+\*$/.test(part)) {
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    }
+    if (/^`[^`]+`$/.test(part)) {
+      return <code key={i} className="bg-gray-100 px-1 rounded">{part.slice(1, -1)}</code>;
+    }
+    const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    if (linkMatch) {
+      return (
+        <a key={i} href={linkMatch[2]} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+          {linkMatch[1]}
+        </a>
+      );
+    }
+    return part;
   });
 }
 
@@ -157,24 +189,27 @@ export default async function BlogPage({ params }: Props) {
     : null;
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <h1 className="text-4xl font-extrabold mb-6">{blog.title}</h1>
+    <div className="md:max-w-3xl  mx-auto px-4 py-10">
 
       {bannerUrl && (
         <Image
           src={bannerUrl}
           alt={blog.banner?.alternativeText || blog.title}
-          width={1000}
-          height={500}
-          className="w-full rounded-lg object-cover mb-6"
+          width={700}
+          height={400}
+          className="w-full md:max-h-[400px] rounded-lg object-cover mb-6"
+          // unoptimized
         />
       )}
+      <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
 
       <p className="text-gray-700 text-lg mb-4">{blog.description}</p>
+            <ContentRenderer content={blog.content} />
 
-      <div className="prose prose-lg max-w-none dark:prose-invert">
+
+      {/* <div className="prose prose-lg max-w-none dark:prose-invert">
         {renderRichContent(blog.content)}
-      </div>
+      </div> */}
     </div>
   );
 }
