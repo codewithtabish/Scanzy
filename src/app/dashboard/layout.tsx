@@ -1,5 +1,6 @@
 import { AppSidebar } from "@/components/custom/dashboard/app-sidebar";
 import { NavActions } from "@/components/custom/dashboard/nav-actions";
+import { ModeToggle } from "@/components/custom/theme-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -44,7 +45,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
-              <div className="ml-auto">
+
+              <div className="ml-auto flex items-center gap-2">
+                <ModeToggle />
                   <SignedIn>
                               <UserButton appearance={{ }} />
                             </SignedIn>
