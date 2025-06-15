@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { SignIn, SignInButton, SignOutButton } from "@clerk/nextjs";
 import Image from "next/image";
 
 export default function CallToAction() {
@@ -16,9 +17,13 @@ export default function CallToAction() {
           <p className="my-7 dark:text-gray-300 text-black text-lg font-normal font-['Space_Grotesk']">
             Contact us today to see how our AI-powered content detection and plagiarism checker can help keep your work original and secure.
           </p>
-          <Button className="px-9 py-5 text-xl rounded-2xl  font-['Space_Grotesk'] leading-7">
+          <SignOutButton >
+            <SignInButton>
+              <Button className="px-9 py-5 text-xl rounded-2xl cursor-pointer  font-['Space_Grotesk'] leading-7">
             Get your free proposal
           </Button>
+            </SignInButton>
+          </SignOutButton>
         </div>
 
         {/* SVG Illustration */}

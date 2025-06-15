@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 import { fadeUp, scaleIn } from './animation';
+import { SignedOut, SignInButton } from '@clerk/nextjs';
 
 export default function Hero() {
   return (
@@ -48,12 +49,18 @@ export default function Hero() {
         transition={{ duration: 0.8, delay: 0.8 }}
         className="z-10 mt-8 flex flex-wrap gap-4 justify-center"
       >
-        <Button className="px-6 py-3 text-base font-medium">
+          <SignedOut>
+              <SignInButton>
+                    <Button className="px-6 py-3 cursor-pointer text-base font-medium">
           Start Free Scan
         </Button>
-        <Button variant="outline" className="px-6 py-3 text-base font-medium">
+               
+              </SignInButton>
+            </SignedOut>
+    
+        {/* <Button variant="outline" className="px-6 py-3 text-base font-medium">
           Request a Demo
-        </Button>
+        </Button> */}
       </motion.div>
     </section>
   );
