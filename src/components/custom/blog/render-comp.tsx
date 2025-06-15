@@ -1,99 +1,104 @@
-'use client';
+// 'use client';
 
-import React from 'react';
+// import React from 'react';
 
-type TextNode = {
-  type: 'text';
-  text: string;
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-  code?: boolean;
-};
+// type AnyNode = any;
 
-type Node = {
-  type: string;
-  level?: number;
-  url?: string;
-  children?: (TextNode | Node)[];
-  src?: string;
-  alt?: string;
-};
+// interface Props {
+//   content: AnyNode; // accept JSON or string
+// }
 
-interface Props {
-  content: Node[];
-}
+// const ContentRenderer: React.FC<Props> = ({ content }) => {
+//   // If content is HTML string, render directly
+//   if (typeof content === 'string') {
+//     return <div dangerouslySetInnerHTML={{ __html: content }} />;
+//   }
 
-const ContentRenderer: React.FC<Props> = ({ content }) => {
-  const renderText = (node: TextNode, i: number): React.ReactNode => {
-    let text: React.ReactNode = node.text;
+//   // If content is wrapped, like { data: [...]} or { content: [...] }
+//   const nodes: AnyNode[] = Array.isArray(content)
+//     ? content
+//     : Array.isArray(content.data)
+//     ? content.data
+//     : Array.isArray(content.content)
+//     ? content.content
+//     : [];
 
-    if (node.bold) text = <strong key={i}>{text}</strong>;
-    if (node.italic) text = <em key={i}>{text}</em>;
-    if (node.underline) text = <u key={i}>{text}</u>;
-    if (node.code) text = <code key={i} className="bg-gray-100 px-1 rounded">{text}</code>;
+//   const renderNode = (node: AnyNode, idx: number): React.ReactNode => {
+//     if (!node || typeof node !== 'object') return null;
 
-    return text;
-  };
+//     const children = (
+//       node.children ||
+//       node.content ||
+//       node.data?.children ||
+//       []
+//     ).map((child: any, i: number) => renderNode(child, i));
 
-  const renderNode = (node: Node | TextNode, index: number): React.ReactNode => {
-    if (node.type === 'text') return renderText(node, index);
+//     const text = node.text ?? node.value ?? undefined;
 
-    const children = node.children?.map((child, i) => renderNode(child, i)) || null;
+//     // Identify heading types
+//     if (node.type?.startsWith('heading') || node.type?.match(/^h[1-6]$/i)) {
+//       const level = node.level || parseInt(node.type?.[1]) || 2;
+//       const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+//       return <Tag key={idx}>{children.length ? children : text}</Tag>;
+//     }
 
-    switch (node.type) {
-      case 'heading':
-        if (node.level === 1) return <h1 key={index} className="text-4xl font-bold text-gray-900 my-4">{children}</h1>;
-        if (node.level === 2) return <h2 key={index} className="text-3xl font-semibold text-gray-800 my-3">{children}</h2>;
-        if (node.level === 3) return <h3 key={index} className="text-2xl font-medium text-gray-700 my-2">{children}</h3>;
-        return <h4 key={index} className="text-xl font-medium text-gray-600 my-2">{children}</h4>;
-      case 'paragraph':
-        return <p key={index} className="my-3 text-gray-700 leading-relaxed">{children}</p>;
-      case 'quote':
-        return <blockquote key={index} className="border-l-4 border-gray-300 pl-4 italic text-gray-600 my-4">{children}</blockquote>;
-      case 'unordered-list':
-        return <ul key={index} className="list-disc pl-6 my-3 text-gray-700">{children}</ul>;
-      case 'ordered-list':
-        return <ol key={index} className="list-decimal pl-6 my-3 text-gray-700">{children}</ol>;
-      case 'list-item':
-        return <li key={index}>{children}</li>;
-      case 'link':
-        return (
-          <a
-            key={index}
-            href={node.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 underline hover:text-blue-800 transition"
-          >
-            {children}
-          </a>
-        );
-      case 'code':
-        return (
-          <pre key={index} className="bg-gray-900 text-white text-sm p-4 rounded my-3 overflow-x-auto">
-            <code>{(node.children?.[0] as TextNode)?.text}</code>
-          </pre>
-        );
-      case 'image':
-        return (
-          <img
-            key={index}
-            src={node.src || ''}
-            alt={node.alt || ''}
-            className="my-6 w-full max-w-2xl rounded shadow-md"
-          />
-        );
-      default:
-        return null;
-    }
-  };
+//     // Paragraph
+//     if (node.type === 'paragraph' || node.type === 'p' || node.nodeName === 'p') {
+//       return <p key={idx}>{children.length ? children : text}</p>;
+//     }
 
-  return (
-    <div className="prose prose-lg max-w-none text-gray-800 dark:text-gray-100">
-      {content?.map((node, index) => renderNode(node, index))}
-    </div>
-  );
-};
+//     // Lists
+//     if (node.type === 'unordered-list' || node.type === 'ul' || node.nodeName === 'UL') {
+//       return <ul key={idx}>{children}</ul>;
+//     }
+//     if (node.type === 'ordered-list' || node.type === 'ol' || node.nodeName === 'OL') {
+//       return <ol key={idx}>{children}</ol>;
+//     }
 
-export default ContentRenderer;
+//     if (node.type === 'list-item' || node.type === 'li' || node.nodeName === 'LI') {
+//       return <li key={idx}>{children.length ? children : text}</li>;
+//     }
+
+//     // Blockquote
+//     if (node.type === 'blockquote' || node.nodeName === 'BLOCKQUOTE' || node.type === 'quote') {
+//       return <blockquote key={idx}>{children.length ? children : text}</blockquote>;
+//     }
+
+//     // Link
+//     if (node.type === 'link' || node.type === 'a' || node.nodeName === 'A') {
+//       const url = node.url || node.href || node.data?.url;
+//       return (
+//         <a key={idx} href={url} target="_blank" rel="noopener noreferrer">
+//           {children.length ? children : text}
+//         </a>
+//       );
+//     }
+
+//     // Code block or inline
+//     if (node.type === 'code' || node.nodeName === 'CODE' || node.nodeName === 'PRE') {
+//       const contentText = children.length ? children : text;
+//       if (node.nodeName === 'PRE') {
+//         return <pre key={idx}>{contentText}</pre>;
+//       }
+//       return <code key={idx}>{contentText}</code>;
+//     }
+
+//     // Image
+//     const src = node.src || node.data?.src || node.data?.file?.url;
+//     if (node.type === 'image' || node.nodeName === 'IMG' || src) {
+//       return <img key={idx} src={src} alt={node.alt || node.data?.alt || ''} style={{ maxWidth: '100%' }} />;
+//     }
+
+//     // Text node
+//     if (typeof text === 'string') {
+//       return <React.Fragment key={idx}>{text}</React.Fragment>;
+//     }
+
+//     // Fallback: render children if any
+//     return <React.Fragment key={idx}>{children}</React.Fragment>;
+//   };
+
+//   return <div>{nodes.map(renderNode)}</div>;
+// };
+
+// export default ContentRenderer;

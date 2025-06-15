@@ -2,7 +2,8 @@ import React from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getBlogBySlug } from "@/actions/blogs";
-import ContentRenderer from "@/components/custom/blog/render-comp";
+import BackButton from "@/components/custom/back-comp";
+// import ContentRenderer from "@/components/custom/blog/render-comp";
 
 function renderRichContent(blocks: any[]) {
   return blocks.map((block: any, i: number) => {
@@ -190,6 +191,7 @@ export default async function BlogPage({ params }: Props) {
 
   return (
     <div className="md:max-w-3xl  mx-auto px-4 py-10">
+      <BackButton/>
 
       {bannerUrl && (
         <Image
@@ -204,12 +206,14 @@ export default async function BlogPage({ params }: Props) {
       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
 
       <p className="text-gray-700 text-lg mb-4">{blog.description}</p>
-            <ContentRenderer content={blog.content} />
+            {/* <ContentRenderer content={blog.content} /> */}
 
 
-      {/* <div className="prose prose-lg max-w-none dark:prose-invert">
+      <div className="prose prose-lg max-w-none dark:prose-invert">
         {renderRichContent(blog.content)}
-      </div> */}
+      </div>
+      {/* {console.log(blog.content)} */}
+      {/* <ContentRenderer content={blog.content}/> */}
     </div>
   );
 }
