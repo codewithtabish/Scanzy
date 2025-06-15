@@ -10,6 +10,7 @@ import { useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
 import { ModeToggle } from './theme-toggle'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
+// @ts-ignore
 import { dark } from '@clerk/themes'
 import { Boxes } from 'lucide-react'
 
