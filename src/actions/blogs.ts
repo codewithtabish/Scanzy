@@ -47,8 +47,8 @@ interface StrapiResponse {
 export async function getBlogs(): Promise<Blog[]> {
   try {
     const res = await fetch('https://scanzy-backend.onrender.com/api/blogs?populate=*', {
-        cache:'no-cache'
-    //   cache: 'force-cache',
+        // cache:'no-cache'
+      // cache: 'force-cache',
     });
 
     if (!res.ok) throw new Error(`Failed to fetch blogs: ${res.status}`);
@@ -67,7 +67,7 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
       `https://scanzy-backend.onrender.com/api/blogs?populate=*&filters[slug][$eq]=${slug}`,
       
 
-      { cache: 'no-cache' }
+      // { cache: 'no-cache' }
     );
 
     if (!res.ok) throw new Error(`Failed to fetch blog by slug: ${res.status}`);

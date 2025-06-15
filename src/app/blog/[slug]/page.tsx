@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getBlogBySlug } from "@/actions/blogs";
 import BackButton from "@/components/custom/back-comp";
-// import ContentRenderer from "@/components/custom/blog/render-comp";
 
 function renderRichContent(blocks: any[]) {
   return blocks.map((block: any, i: number) => {
@@ -28,12 +27,25 @@ function renderRichContent(blocks: any[]) {
     const rawText = block.children.map((c: any) => c.text).join("\n").trim();
     if (!rawText || rawText === "---") return null;
 
-    // Headings
-    if (/^###\s/.test(rawText)) return <h3 key={i} className="text-xl font-semibold mt-6 mb-2">{rawText.replace(/^###\s/, "")}</h3>;
-    if (/^##\s/.test(rawText)) return <h2 key={i} className="text-2xl font-bold mt-8 mb-3">{rawText.replace(/^##\s/, "")}</h2>;
-    if (/^#\s/.test(rawText)) return <h1 key={i} className="text-3xl font-bold mt-10 mb-4">{rawText.replace(/^#\s/, "")}</h1>;
+    if (/^###\s/.test(rawText))
+      return (
+        <h3 key={i} className="text-xl font-semibold mt-6 mb-2">
+          {rawText.replace(/^###\s/, "")}
+        </h3>
+      );
+    if (/^##\s/.test(rawText))
+      return (
+        <h2 key={i} className="text-2xl font-bold mt-8 mb-3">
+          {rawText.replace(/^##\s/, "")}
+        </h2>
+      );
+    if (/^#\s/.test(rawText))
+      return (
+        <h1 key={i} className="text-3xl font-bold mt-10 mb-4">
+          {rawText.replace(/^#\s/, "")}
+        </h1>
+      );
 
-    // Blockquote
     if (rawText.startsWith("> ")) {
       return (
         <blockquote
@@ -45,90 +57,84 @@ function renderRichContent(blocks: any[]) {
       );
     }
 
-    // Multi-line Code Block: ```js\ncode\n```
-// Multi-line code block (```lang\n...\n```)
-if (/^```/.test(rawText)) {
-  const match = rawText.match(/^```([a-zA-Z0-9]+)?\s*\n?([\s\S]*?)\n?```$/);
-  const lang = match?.[1] || "text";
-  const code = match?.[2]?.trim() || rawText.replace(/```/g, "").trim();
+    if (/^```/.test(rawText)) {
+      const match = rawText.match(/^```([a-zA-Z0-9]+)?\s*\n?([\s\S]*?)\n?```$/);
+      const lang = match?.[1] || "text";
+      const code = match?.[2]?.trim() || rawText.replace(/```/g, "").trim();
 
-  return (
-    <pre
-      key={i}
-      className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
-      style={{
-        fontFamily: "monospace",
-        whiteSpace: "pre", // ✅ THIS ensures spacing & line breaks work
-        margin: 0,
-      }}
-    >
-      <code className={`language-${lang}`} style={{ display: "block" }}>
-        {code}
-      </code>
-    </pre>
-  );
-}
+      return (
+        <pre
+          key={i}
+          className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
+          style={{
+            fontFamily: "monospace",
+            whiteSpace: "pre",
+            margin: 0,
+          }}
+        >
+          <code className={`language-${lang}`} style={{ display: "block" }}>
+            {code}
+          </code>
+        </pre>
+      );
+    }
 
+    const oneLineLangMatch = rawText.match(
+      /^(js|ts|python|html|css|json|bash|sh)\n(.+)/i
+    );
+    if (oneLineLangMatch) {
+      const [, lang, code] = oneLineLangMatch;
 
-// One-liner with language hint (e.g., js\ncode)
-const oneLineLangMatch = rawText.match(/^(js|ts|python|html|css|json|bash|sh)\n(.+)/i);
-if (oneLineLangMatch) {
-  const [, lang, code] = oneLineLangMatch;
+      return (
+        <pre
+          key={i}
+          className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
+          style={{
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+            fontFamily: "monospace",
+          }}
+        >
+          <code className={`language-${lang}`} style={{ whiteSpace: "pre-wrap" }}>
+            {code}
+          </code>
+        </pre>
+      );
+    }
 
-  return (
-    <pre
-      key={i}
-      className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
-      style={{
-        whiteSpace: "pre-wrap",
-        wordBreak: "break-word",
-        fontFamily: "monospace",
-      }}
-    >
-      <code className={`language-${lang}`} style={{ whiteSpace: "pre-wrap" }}>
-        {code}
-      </code>
-    </pre>
-  );
-}
+    if (/^`[^`]+`$/.test(rawText)) {
+      const inlineCode = rawText.slice(1, -1);
+      return (
+        <p key={i} className="mb-4 leading-relaxed text-gray-800 dark:text-gray-300">
+          <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-sm">
+            {inlineCode}
+          </code>
+        </p>
+      );
+    }
 
-// Inline `code` block inside paragraph
-if (/^`[^`]+`$/.test(rawText)) {
-  const inlineCode = rawText.slice(1, -1);
-  return (
-    <p key={i} className="mb-4 leading-relaxed text-gray-800 dark:text-gray-300">
-      <code className="bg-gray-100 px-1 py-0.5 rounded font-mono text-sm">{inlineCode}</code>
-    </p>
-  );
-}
-
-  
-
-    // Bullet List
     if (/^(\*|\-)\s+/.test(rawText)) {
       const items = rawText.split(/(?:\r?\n)?(?:\*|\-)\s+/).filter(Boolean);
       return (
         <ul key={i} className="list-disc list-inside mb-4">
-          {items.map((item:any, idx:any) => (
+          {items.map((item: any, idx: any) => (
             <li key={idx}>{renderInlineMarkdown(item)}</li>
           ))}
         </ul>
       );
     }
 
-    // Numbered List
     if (/^\d+\.\s/.test(rawText)) {
       const items = rawText.split(/(?=\d+\.\s)/g);
       return (
         <ol key={i} className="list-decimal list-inside mb-4">
-          {items.map((item:any, idx:any) => (
+          {items.map((item: any, idx: any) => (
             <li key={idx}>{renderInlineMarkdown(item.replace(/^\d+\.\s/, ""))}</li>
           ))}
         </ol>
       );
     }
 
-    // Inline Image
     const inlineImage = rawText.match(/!\[([^\]]*)\]\(([^)]+)\)/);
     if (inlineImage) {
       const [, alt, src] = inlineImage;
@@ -145,7 +151,6 @@ if (/^`[^`]+`$/.test(rawText)) {
       );
     }
 
-    // Fallback Paragraph
     return (
       <p key={i} className="mb-4 leading-relaxed text-gray-800 dark:text-gray-300">
         {renderInlineMarkdown(rawText)}
@@ -168,7 +173,13 @@ function renderInlineMarkdown(text: string) {
     const linkMatch = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
     if (linkMatch) {
       return (
-        <a key={i} href={linkMatch[2]} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+        <a
+          key={i}
+          href={linkMatch[2]}
+          className="text-blue-600 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {linkMatch[1]}
         </a>
       );
@@ -178,11 +189,15 @@ function renderInlineMarkdown(text: string) {
 }
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function BlogPage({ params }: Props) {
-  const blog = await getBlogBySlug(params.slug);
+  // Await params here
+  const { slug } = await params;
+
+  const blog = await getBlogBySlug(slug);
+
   if (!blog) return notFound();
 
   const bannerUrl = blog.banner?.url
@@ -190,8 +205,8 @@ export default async function BlogPage({ params }: Props) {
     : null;
 
   return (
-    <div className="md:max-w-3xl  mx-auto px-4 py-10">
-      <BackButton/>
+    <div className="md:max-w-3xl mx-auto px-4 py-10">
+      <BackButton />
 
       {bannerUrl && (
         <Image
@@ -200,20 +215,16 @@ export default async function BlogPage({ params }: Props) {
           width={700}
           height={400}
           className="w-full md:max-h-[400px] rounded-lg object-cover mb-6"
-          // unoptimized
         />
       )}
+
       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
 
       <p className="text-gray-700 text-lg mb-4">{blog.description}</p>
-            {/* <ContentRenderer content={blog.content} /> */}
-
 
       <div className="prose prose-lg max-w-none dark:prose-invert">
         {renderRichContent(blog.content)}
       </div>
-      {/* {console.log(blog.content)} */}
-      {/* <ContentRenderer content={blog.content}/> */}
     </div>
   );
 }
