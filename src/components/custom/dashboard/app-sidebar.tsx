@@ -290,7 +290,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
          <SidebarFooter>
         {/* yes  */}
-        <NavUser user={dataUser.user} />
+        {/* <NavUser user={dataUser.user} /> */}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
