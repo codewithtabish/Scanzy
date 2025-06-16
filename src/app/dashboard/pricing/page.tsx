@@ -6,10 +6,10 @@ import AIDetector from '@/components/custom/content-detection/detector-toolbox'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Sparkles } from "lucide-react"
-import PlagirismTopCard from "@/components/custom/plagrisim/plagrism-top-header"
-import PlagiarismChecker from "@/components/custom/plagrisim/plagirsim-detection"
+import BillingAndInvoices from "@/components/custom/billing/billing-invices"
+import Pricing from "@/components/custom/pricing"
 
-const AIContentDetectionPage = () => {
+const BillingAndInvoicesPage = () => {
   return (
     <>
       {/* Top Bar with Sidebar Trigger and Breadcrumb */}
@@ -40,11 +40,10 @@ const AIContentDetectionPage = () => {
 
       {/* Main Content */}
       <div className='md:max-w-7xl w-full mx-auto md:py-24 px-4'>
-        <PlagirismTopCard/>
-        <PlagiarismChecker/>
+        <Pricing/>
       </div>
     </>
   )
 }
 
-export default AIContentDetectionPage
+export default BillingAndInvoicesPage

@@ -6,9 +6,11 @@ import {
   Blocks,
   Calendar,
   Command,
+  CreditCard,
   Home,
   Inbox,
   MessageCircleQuestion,
+  MoreVertical,
   Search,
   Settings2,
   Sparkles,
@@ -32,6 +34,7 @@ import { NavFavorites } from "./nav-favorites"
 import { NavWorkspaces } from "./nav-workspaces"
 import { NavSecondary } from "./nav-secondary"
 import { NavUser } from "./nav-user";
+import { IconCash } from "@tabler/icons-react";
 
 // This is sample data.
 const data = {
@@ -68,45 +71,47 @@ const data = {
     url: "/dashboard/plagiarism-checker",
     icon: ShieldAlert,
   },
-  // {
-  //   // title: "Sentiment Detection",
-  //   // url: "/dashboard/sentiment-detection",
-  //   // icon: MessageSquareText,
-  // },
-  {
-    title: "Billing & Invoices",
-    url: "/dashboard/billing",
-    icon: SubscriptIcon,
-  },
+ 
+
  
    
   ],
   navSecondary: [
-    {
-      title: "Calendar",
-      url: "#",
-      icon: Calendar,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
-    {
-      title: "Templates",
-      url: "#",
-      icon: Blocks,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
-    },
-    {
-      title: "Help",
-      url: "#",
-      icon: MessageCircleQuestion,
-    },
+      {
+    title: "Billing & Invoices",
+    url: "/dashboard/billing",
+    icon: SubscriptIcon,
+  },
+   {
+    title: "Pricing",
+    url: "/dashboard/pricing",
+    icon: CreditCard,
+  },
+    // {
+    //   title: "Calendar",
+    //   url: "#",
+    //   icon: Calendar,
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    // },
+    // {
+    //   title: "Templates",
+    //   url: "#",
+    //   icon: Blocks,
+    // },
+    // {
+    //   title: "Trash",
+    //   url: "#",
+    //   icon: Trash2,
+    // },
+    // {
+    //   title: "Help",
+    //   url: "#",
+    //   icon: MessageCircleQuestion,
+    // },
   ],
   favorites: [
     {
@@ -286,7 +291,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="p-4">
         {/* <NavFavorites favorites={data.favorites} /> */}
         {/* <NavWorkspaces workspaces={data.workspaces} /> */}
-        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
          <SidebarFooter>
         {/* yes  */}
