@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ScanSearch } from "lucide-react"
+import { BrushCleaningIcon, ScanSearch } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { detectAIContent } from "@/actions/ai-conetent-detection"
@@ -18,15 +18,28 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+type Provider = "sapling" | "winstonai"
 
 export default function AIDetector() {
   const [text, setText] = useState("")
-  const [providers, setProviders] = useState<string[]>([])
+  const [providers, setProviders] = useState<Provider[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<any>(null)
 
-  const handleProviderToggle = (provider: string) => {
+  const handleProviderToggle = (provider: Provider) => {
     setProviders((prev) =>
       prev.includes(provider)
         ? prev.filter((p) => p !== provider)
@@ -40,29 +53,52 @@ export default function AIDetector() {
     setResult(null)
 
     try {
+      if (!navigator.onLine) {
+        throw new Error("No internet connection. Please check your network.")
+      }
+
       if (providers.length === 0) {
-        setError("Please select at least one provider.")
-        setLoading(false)
-        return
+        throw new Error("Please select at least one provider.")
       }
 
       if (text.trim().length < 300) {
-        setError("Please enter at least 300 characters of text.")
-        setLoading(false)
-        return
+        throw new Error("Please enter at least 300 characters of text.")
       }
 
-      const response = await detectAIContent({
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 15000)
+          const response = await detectAIContent({
         text,
         providers: providers as ["sapling" | "winstonai", ...("sapling" | "winstonai")[]],
       })
 
+    //   const response = await detectAIContent(
+    //     {
+    //       text,
+    //       providers,
+    //     },
+    //     { signal: controller.signal }
+    //   )
+
+      clearTimeout(timeoutId)
       setResult(response)
-    } catch {
-      setError("Something went wrong while detecting AI content.")
+    } catch (err: any) {
+      if (err.name === "AbortError") {
+        setError("Request timed out. Please try again.")
+      } else {
+        setError(err.message || "Something went wrong while detecting AI content.")
+      }
     } finally {
       setLoading(false)
     }
+  }
+
+  const resetAll = () => {
+    setText("")
+    setProviders([])
+    setResult(null)
+    setError(null)
+    setLoading(false)
   }
 
   const ProviderResultCard = ({
@@ -83,83 +119,18 @@ export default function AIDetector() {
     return (
       <Card className={isSingle ? "w-full col-span-2" : "w-full"}>
         <CardHeader>
-        <CardTitle
-  className="capitalize font-semibold flex flex-col gap-1"
->
-  <span className="text-primary">
-    {/* {name} – AI Score: {(data.ai_score * 100).toFixed(2)}% */}
-  </span>
-  <span className="text-red-600 py-2 font-medium">
-    AI Detected: {(data.ai_score * 100).toFixed(2)}%
-  </span>
-  <span className="text-green-600 py-2 font-medium">
-    Original: {(100 - data.ai_score * 100).toFixed(2)}%
-  </span>
-</CardTitle>
-
+          <CardTitle className="capitalize font-semibold flex flex-col gap-1">
+            <span className="text-primary">
+              {name}
+            </span>
+            <span className="text-red-600 py-1 font-medium">
+              AI Detected: {(data.ai_score * 100).toFixed(2)}%
+            </span>
+            <span className="text-green-600 py-1 font-medium">
+              Original: {(100 - data.ai_score * 100).toFixed(2)}%
+            </span>
+          </CardTitle>
         </CardHeader>
-        {/* <CardContent>
-          <Tabs defaultValue="visual" className="w-full">
-            <TabsList className="mb-4">
-              <TabsTrigger value="visual">Visual</TabsTrigger>
-              <TabsTrigger value="api">API Response</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="visual">
-              <div className="space-y-3 text-sm">
-                {data.items.map((item: any, i: number) => {
-                  const isOriginal =
-                    item.prediction.toLowerCase() === "original"
-                  return (
-                    <div
-                      key={i}
-                      className="bg-muted p-4 rounded border space-y-2"
-                    >
-                      <div>
-                        <strong>Prediction:</strong>{" "}
-                        <span
-                          className={
-                            isOriginal
-                              ? "text-green-600 font-semibold"
-                              : "text-red-600 font-semibold"
-                          }
-                        >
-                          {item.prediction}
-                        </span>
-                      </div>
-                      <div>
-                        <strong className="text-primary font-bold">
-                          Score:
-                        </strong>{" "}
-                        <span
-                          className={
-                            isOriginal
-                              ? "text-green-600 font-bold"
-                              : "text-primary font-bold"
-                          }
-                        >
-                          {(item.ai_score * 100).toFixed(2)}%
-                        </span>
-                      </div>
-                      <p className="text-muted-foreground">"{item.text}"</p>
-                    </div>
-                  )
-                })}
-                {data.cost && (
-                  <p className="text-xs text-right text-muted-foreground pt-2">
-                    Provider Cost: ${data.cost}
-                  </p>
-                )}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="api">
-              <pre className="text-xs p-2 bg-muted rounded overflow-x-auto">
-                {JSON.stringify(data, null, 2)}
-              </pre>
-            </TabsContent>
-          </Tabs>
-        </CardContent> */}
       </Card>
     )
   }
@@ -168,7 +139,30 @@ export default function AIDetector() {
   const charCount = text.trim().length
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-6 rounded-xl  space-y-6">
+    <div className="w-full max-w-3xl mx-auto p-6 rounded-xl space-y-6">
+      {/* Avatar Dropdown Reset Button */}
+      <div className="flex justify-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="cursor-pointer border hover:shadow">
+              <AvatarImage src="/avatar.png" />
+              <AvatarFallback>
+                <BrushCleaningIcon  
+                className="w-5 h-5 text-sm"
+                />
+
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger >
+          <DropdownMenuContent className="w-44">
+            <DropdownMenuItem onClick={resetAll}>
+              Reset All States
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Text Input */}
       <div className="relative">
         <div className="absolute top-2 left-4 text-xs text-muted-foreground">
           Words: {wordCount} | Characters: {charCount}
@@ -184,7 +178,6 @@ export default function AIDetector() {
 
         <div className="absolute bottom-4 right-4 flex gap-2 z-10">
           <Button
-
             onClick={handleCheck}
             disabled={loading || !text.trim() || text.trim().length < 300}
             size="sm"
@@ -196,6 +189,7 @@ export default function AIDetector() {
         </div>
       </div>
 
+      {/* Provider Selection */}
       <div className="flex justify-end">
         <div className="space-y-3 text-right max-w-md">
           <p className="text-sm text-muted-foreground font-medium">
@@ -226,6 +220,7 @@ export default function AIDetector() {
         </div>
       </div>
 
+      {/* Results */}
       {result?.data && (
         <div
           className={`grid gap-6 mt-6 ${
@@ -234,14 +229,14 @@ export default function AIDetector() {
         >
           {providers.includes("sapling") && result.data.sapling && (
             <ProviderResultCard
-              name="sapling"
+              name="Sapling"
               data={result.data.sapling}
               providers={providers}
             />
           )}
           {providers.includes("winstonai") && result.data.winstonai && (
             <ProviderResultCard
-              name="winstonai"
+              name="Winston AI"
               data={result.data.winstonai}
               providers={providers}
             />
