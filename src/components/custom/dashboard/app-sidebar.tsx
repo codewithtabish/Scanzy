@@ -68,11 +68,11 @@ const data = {
     url: "/dashboard/plagiarism-checker",
     icon: ShieldAlert,
   },
-  {
-    title: "Sentiment Detection",
-    url: "/dashboard/sentiment-detection",
-    icon: MessageSquareText,
-  },
+  // {
+  //   // title: "Sentiment Detection",
+  //   // url: "/dashboard/sentiment-detection",
+  //   // icon: MessageSquareText,
+  // },
   {
     title: "Billing & Invoices",
     url: "/dashboard/billing",
@@ -284,7 +284,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent className="p-4">
-        <NavFavorites favorites={data.favorites} />
+        {/* <NavFavorites favorites={data.favorites} /> */}
         {/* <NavWorkspaces workspaces={data.workspaces} /> */}
         {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
