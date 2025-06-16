@@ -1,6 +1,6 @@
 // app/(dashboard)/page.tsx
 
-"use client";
+// "use client";
 
 import {
   Breadcrumb,
@@ -20,6 +20,56 @@ import { ChartAreaInteractive } from "@/components/custom/dashboard/chart-area-i
 import data from "@/utils/data.json"
 import { DataTable } from "@/components/custom/dashboard/data-table";
 import UpcomingFeatures from "@/components/custom/dashboard/upcomming-feature";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard – Scanzy AI",
+  description:
+    "Your personalized Scanzy AI dashboard. Manage projects, track tasks, analyze AI content detection results, and access upcoming features.",
+  keywords: [
+    "Scanzy AI dashboard",
+    "Scanzy project management",
+    "AI content detection dashboard",
+    "Scanzy task tracking",
+    "Scanzy user dashboard",
+    "Scanzy AI tools",
+    "Scanzy account overview",
+    "Scanzy upcoming features",
+    "Scanzy analytics",
+    "Scanzy user stats",
+    "Scanzy AI reports",
+    "Scanzy platform dashboard",
+  ],
+  alternates: {
+    canonical: "https://scanzy.fun/dashboard",
+  },
+  openGraph: {
+    title: "Dashboard – Scanzy AI",
+    description:
+      "Access your Scanzy AI dashboard to manage projects, view AI detection results, and explore new features.",
+    url: "https://scanzy.fun/dashboard",
+    siteName: "Scanzy AI",
+    type: "website",
+    images: [
+      {
+        url: "https://scanzy.fun/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Scanzy AI Dashboard",
+      },
+    ],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dashboard – Scanzy AI",
+    description:
+      "Your personalized Scanzy AI dashboard to manage tasks, projects, and AI content insights.",
+    images: ["https://scanzy.fun/og-image.png"],
+  },
+};
+
 
 
 export default function Page() {

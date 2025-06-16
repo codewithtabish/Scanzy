@@ -1,13 +1,110 @@
-// app/(auth)/sign-in/page.tsx
-'use client';
+import SignInClient from "@/components/auth/auth-client"
+import { Metadata } from "next"
 
-import { SignIn } from '@clerk/nextjs';
-import { useTheme } from 'next-themes';
-import { dark } from '@clerk/themes';
+export const metadata: Metadata = {
+  title: 'Login – Scanzy AI',
+  description: 'Securely log in to access your Scanzy AI dashboard, tools, and personalized settings.',
+  keywords: [
+    'Scanzy login', 'Scanzy AI login', 'Scanzy sign in', 'Scanzy AI sign in', 'AI content detector login',
+    'AI content checker login', 'AI content detection tool login', 'plagiarism checker login',
+    'login to Scanzy', 'Scanzy AI login page', 'account login Scanzy AI', 'Scanzy tools access login',
+    'sign in to Scanzy tools', 'AI content detection account login', 'Scanzy user login',
+    'Scanzy dashboard login', 'Scanzy AI tools login', 'Scanzy online tools login',
+    'AI detector account login', 'Scanzy plagiarism login', 'AI scanner sign in',
+    'Scanzy access portal', 'AI plagiarism scanner login', 'AI tools for writing login',
+    'Scanzy login screen', 'Scanzy secure login', 'Scanzy AI user access', 'Scanzy user panel login',
+    'Scanzy AI authentication', 'Scanzy AI access page', 'Scanzy AI content tools login',
+    'AI detection login screen', 'login with Clerk Scanzy', 'Scanzy Google sign in',
+    'Scanzy GitHub login', 'Scanzy login form', 'Scanzy platform login', 'Scanzy online login',
+    'Scanzy login to tools', 'AI writing checker login', 'AI tool suite login', 'Scanzy cloud tools login',
+    'AI ethics checker login', 'AI authenticity checker login', 'Scanzy verify login',
+    'Scanzy user area login', 'Scanzy access tools login', 'AI-generated content login',
+    'Scanzy login for plagiarism tools', 'Scanzy content analysis login', 'Scanzy NLP login',
+    'Scanzy generative AI login', 'content analysis tools login', 'Scanzy AI detection suite login',
+    'Scanzy admin login', 'Scanzy secure portal', 'Scanzy detect AI login', 'Scanzy student login',
+    'Scanzy education tool login', 'Scanzy developer tools login', 'Scanzy SaaS login',
+    'Scanzy writing AI login', 'Scanzy document analysis login', 'Scanzy online AI login',
+    'Scanzy academic login', 'Scanzy for writers login', 'Scanzy AI tech login',
+    'Scanzy login access', 'Scanzy AI checker tool login', 'Scanzy pro login', 'Scanzy free login',
+    'Scanzy login credentials', 'Scanzy login form page', 'Scanzy AI platform login',
+    'Scanzy content login page', 'Scanzy writing analysis login', 'Scanzy essay checker login',
+    'Scanzy blog checker login', 'Scanzy writing content login', 'Scanzy access panel login',
+    'Scanzy tools page login', 'Scanzy AI detection login tool', 'Scanzy AI checker sign in',
+    'Scanzy analysis sign in', 'Scanzy tool dashboard login', 'Scanzy login via Gmail',
+    'Scanzy clerk login page', 'Scanzy token login', 'Scanzy email login', 'Scanzy login credentials',
+    'Scanzy log into account', 'Scanzy AI account login screen', 'Scanzy portal login form',
+    'Scanzy AI verification login', 'Scanzy NLP tool login', 'Scanzy account entry page',
+    'Scanzy membership login', 'Scanzy dashboard page login', 'Scanzy sign-in system',
+    'Scanzy verification portal', 'Scanzy interface login', 'Scanzy web tool login',
+    'Scanzy AI content gateway', 'Scanzy content verification login', 'Scanzy login using credentials',
+    'Scanzy tool suite login', 'Scanzy plagiarism system login', 'Scanzy quick login',
+    'Scanzy one-click login', 'Scanzy login with two-factor', 'Scanzy login for students',
+    'Scanzy for professionals login', 'Scanzy teacher login', 'Scanzy AI generator login',
+    'Scanzy auto login', 'Scanzy token-based login', 'Scanzy login with magic link',
+    'Scanzy password login', 'Scanzy email verification login', 'Scanzy member access login',
+    'Scanzy user console login', 'Scanzy educational tools login', 'Scanzy login area',
+    'Scanzy login credentials form', 'Scanzy secure page login', 'Scanzy login page for tools',
+    'Scanzy text scanner login', 'Scanzy neural AI login', 'Scanzy writer AI login',
+    'Scanzy text AI login', 'Scanzy generator detection login', 'Scanzy sign in screen',
+    'Scanzy online content checker login', 'Scanzy AI originality checker login',
+    'Scanzy intelligent detection login', 'Scanzy natural language AI login', 'Scanzy AI review login',
+    'Scanzy article checker login', 'Scanzy login for text input', 'Scanzy plagiarism login interface',
+    'Scanzy document upload login', 'Scanzy advanced login page', 'Scanzy AI log-in tool',
+    'Scanzy detection portal login', 'Scanzy analysis platform login', 'Scanzy identity login',
+    'Scanzy content monitor login', 'Scanzy AI checker access', 'Scanzy login AI scanner',
+    'Scanzy AI user dashboard login', 'Scanzy account verification login', 'Scanzy secure access login',
+    'Scanzy secure credentials login', 'Scanzy AI filter login', 'Scanzy writing originality login',
+    'Scanzy tools gateway login', 'Scanzy insight tools login', 'Scanzy AI suite login',
+    'Scanzy creative login', 'Scanzy safe content login', 'Scanzy responsible AI login',
+    'Scanzy access portal sign in', 'Scanzy AI checker membership login', 'Scanzy team login',
+    'Scanzy access tool sign in', 'Scanzy private login', 'Scanzy remote login',
+    'Scanzy AI moderation login', 'Scanzy login system page', 'Scanzy artificial intelligence login',
+    'Scanzy smart content login', 'Scanzy plagiarism solution login', 'Scanzy AI login experience',
+    'Scanzy login platform user', 'Scanzy cloud sign in', 'Scanzy data login', 'Scanzy secure sign in',
+    'Scanzy plagiarism access sign in', 'Scanzy Google account login', 'Scanzy dashboard sign in',
+    'Scanzy real-time AI login', 'Scanzy interactive login', 'Scanzy assistant login',
+    'Scanzy browser sign in', 'Scanzy account login details', 'Scanzy authentication login',
+    'Scanzy productivity tools login', 'Scanzy login manager', 'Scanzy plagiarism scan login',
+    'Scanzy student portal login', 'Scanzy enterprise login', 'Scanzy login gateway',
+    'Scanzy AI content sign in form', 'Scanzy sign in tools panel', 'Scanzy login UI',
+    'Scanzy experience page login', 'Scanzy secure user login', 'Scanzy fast login',
+    'Scanzy page for account sign in', 'Scanzy AI content scanning login',
+    'Scanzy plagiarism check dashboard', 'Scanzy full login portal', 'Scanzy app login',
+    'Scanzy AI platform secure login', 'Scanzy AI checker user login', 'Scanzy admin panel login',
+    'Scanzy platform sign in page', 'Scanzy cloud app login', 'Scanzy user authentication page',
+    'Scanzy backend login', 'Scanzy front-end login', 'Scanzy content checking AI sign in',
+    'Scanzy plagiarism portal login', 'Scanzy SaaS login form', 'Scanzy secured sign-in',
+    'Scanzy verified access login', 'Scanzy verify AI tools login', 'Scanzy login management system',
+    'Scanzy personal account login', 'Scanzy AI scanner secure login', 'Scanzy account portal login',
+    'Scanzy login account tool page', 'Scanzy gateway to tools login'
+  ],
+  alternates: {
+    canonical: 'https://scanzy.fun/sign-in',
+  },
+  openGraph: {
+    title: 'Login – Scanzy AI',
+    description: 'Access your Scanzy AI account to detect AI content, check plagiarism, and more.',
+    url: 'https://scanzy.fun/sign-in',
+    siteName: 'Scanzy AI',
+    images: [
+      {
+        url: 'https://scanzy.fun/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Scanzy AI Login Image',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Login – Scanzy AI',
+    description: 'Log in to Scanzy AI and start using smart AI tools for content checking.',
+    images: ['https://scanzy.fun/og-image.png'],
+  },
+}
 
 export default function SignInPage() {
-  const { resolvedTheme } = useTheme();
-  const clerkTheme = resolvedTheme === 'dark' ? dark : undefined;
-
-  return <SignIn appearance={{ baseTheme: clerkTheme }} />;
+  return <SignInClient />
 }

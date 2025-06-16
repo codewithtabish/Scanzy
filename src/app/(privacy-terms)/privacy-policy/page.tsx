@@ -1,11 +1,56 @@
-// app/privacy/page.tsx (or pages/privacy.tsx if using Pages Router)
+// app/privacy/page.tsx
 
 import BackButton from "@/components/custom/back-comp";
+import { Metadata } from "next";
 
+// ✅ Metadata must be declared outside the component
+export const metadata: Metadata = {
+  title: "Privacy Policy – Scanzy AI",
+  description:
+    "Read how Scanzy AI collects, uses, and protects your data. We prioritize your privacy and ensure transparency in all data practices.",
+  keywords: [
+    "Scanzy AI privacy policy",
+    "data protection",
+    "user privacy Scanzy",
+    "AI tool privacy",
+    "Scanzy GDPR policy",
+    "how Scanzy uses data",
+    "data handling Scanzy AI",
+  ],
+  alternates: {
+    canonical: "https://scanzy.fun/privacy-policy",
+  },
+  openGraph: {
+    title: "Privacy Policy – Scanzy AI",
+    description:
+      "Learn how Scanzy AI handles and protects your personal data with transparency and care.",
+    url: "https://scanzy.fun/privacy-policy",
+    siteName: "Scanzy AI",
+    images: [
+      {
+        url: "https://scanzy.fun/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Scanzy AI Privacy Policy Image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy – Scanzy AI",
+    description:
+      "We value your privacy. Learn how Scanzy AI processes your data safely and ethically.",
+    images: ["https://scanzy.fun/og-image.png"],
+  },
+};
+
+// ✅ Functional Component
 export default function PrivacyPolicy() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
-      <BackButton/>
+      <BackButton />
       <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
 
       <p className="mb-4">
@@ -19,7 +64,9 @@ export default function PrivacyPolicy() {
         access our platform at <strong>https://scanzy.ai</strong>.
       </p>
 
-      <h2 className="text-xl font-semibold mt-10 mb-2">1. Information We Collect</h2>
+      <h2 className="text-xl font-semibold mt-10 mb-2">
+        1. Information We Collect
+      </h2>
       <ul className="list-disc list-inside space-y-2 mb-6">
         <li>
           <strong>Account Information:</strong> When you register or sign in using
@@ -56,9 +103,15 @@ export default function PrivacyPolicy() {
 
       <h2 className="text-xl font-semibold mt-10 mb-2">3. Sharing and Disclosure</h2>
       <ul className="list-disc list-inside space-y-2 mb-6">
-        <li><strong>Third-Party Services:</strong> We use services such as Clerk.dev (authentication), Vercel (hosting), and analytics tools. These providers may access necessary data under strict confidentiality agreements.</li>
-        <li><strong>Legal Requests:</strong> We may disclose data to comply with applicable law, regulations, or lawful requests from authorities.</li>
-        <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or asset sale, user data may be part of the transferred assets.</li>
+        <li>
+          <strong>Third-Party Services:</strong> We use services such as Clerk.dev (authentication), Vercel (hosting), and analytics tools. These providers may access necessary data under strict confidentiality agreements.
+        </li>
+        <li>
+          <strong>Legal Requests:</strong> We may disclose data to comply with applicable law, regulations, or lawful requests from authorities.
+        </li>
+        <li>
+          <strong>Business Transfers:</strong> In the event of a merger, acquisition, or asset sale, user data may be part of the transferred assets.
+        </li>
       </ul>
 
       <h2 className="text-xl font-semibold mt-10 mb-2">4. Data Retention</h2>
@@ -69,7 +122,9 @@ export default function PrivacyPolicy() {
         analytics and service improvement.
       </p>
 
-      <h2 className="text-xl font-semibold mt-10 mb-2">5. Cookies and Tracking Technologies</h2>
+      <h2 className="text-xl font-semibold mt-10 mb-2">
+        5. Cookies and Tracking Technologies
+      </h2>
       <p className="mb-6">
         Scanzy AI uses cookies and similar technologies to improve functionality,
         analyze usage, and enhance user experience. You can control cookie settings
@@ -94,7 +149,7 @@ export default function PrivacyPolicy() {
       <p className="mb-6">
         To exercise your rights, contact us at:
         <br />📧 <strong>kashisultan099@gmail.com</strong>
-        <br />📞 <strong>+91-XXXXXXXXXX</strong>
+        <br />📞 <strong>+(92) 316 9000 919</strong>
       </p>
 
       <h2 className="text-xl font-semibold mt-10 mb-2">8. Data Security</h2>

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://scanzy.fun
+
+# Sitemaps
+Sitemap: https://scanzy.fun/sitemap.xml

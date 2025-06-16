@@ -1,130 +1,122 @@
-'use client';
+import HelpCenterClient from "@/components/help/help-center-client";
 
-import BackButton from '@/components/custom/back-comp';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-
-const helpCategories = [
-  {
-    title: 'Getting Started',
-    description: 'Learn how to set up your account and run your first scan.',
-    link: '/help/getting-started',
+export const metadata = {
+  title: "Help Center – Scanzy AI Support, FAQs & Troubleshooting",
+  description:
+    "Need help using Scanzy AI tools? Visit our Help Center for FAQs, guides, troubleshooting, account setup, billing info, and support resources.",
+  keywords: [
+    "Scanzy AI help center",
+    "Scanzy support page",
+    "Scanzy AI FAQ",
+    "how to use Scanzy AI",
+    "Scanzy billing help",
+    "Scanzy subscription",
+    "Scanzy cancel subscription",
+    "Scanzy account setup",
+    "Scanzy scan failed",
+    "Scanzy AI tool issues",
+    "Scanzy refund request",
+    "Scanzy pricing questions",
+    "Scanzy AI detection explanation",
+    "AI plagiarism detection help",
+    "Scanzy user guide",
+    "Scanzy beginner tutorial",
+    "Scanzy payment method",
+    "Scanzy error support",
+    "Scanzy scan issues",
+    "Scanzy report understanding",
+    "Scanzy AI false positive",
+    "Scanzy detection accuracy",
+    "AI content explanation",
+    "Scanzy AI usage tips",
+    "Scanzy tool tutorial",
+    "Scanzy troubleshooting steps",
+    "Scanzy how it works",
+    "Scanzy feature guide",
+    "AI scanner instructions",
+    "fix Scanzy issues",
+    "Scanzy how to scan",
+    "Scanzy scan blocked",
+    "Scanzy detection guide",
+    "Scanzy plan options",
+    "Scanzy upgrade plan",
+    "Scanzy contact help",
+    "Scanzy tool not loading",
+    "Scanzy browser issues",
+    "Scanzy compatibility",
+    "Scanzy for writers",
+    "Scanzy for bloggers",
+    "Scanzy for developers",
+    "Scanzy for university students",
+    "Scanzy AI tool broken",
+    "Scanzy scanner guide",
+    "Scanzy rewrite help",
+    "Scanzy originality score meaning",
+    "Scanzy AI prompt help",
+    "Scanzy refund steps",
+    "Scanzy cancellation process",
+    "Scanzy auto-renew info",
+    "Scanzy account problem",
+    "Scanzy support email",
+    "Scanzy live help",
+    "Scanzy chatbot help",
+    "Scanzy AI vs GPTZero",
+    "Scanzy feature comparison",
+    "Scanzy vs other tools",
+    "Scanzy AI update log",
+    "Scanzy API help",
+    "Scanzy onboarding",
+    "Scanzy customer support",
+    "Scanzy form guide",
+    "Scanzy feedback link",
+    "Scanzy website issues",
+    "Scanzy mobile problem",
+    "Scanzy desktop app",
+    "Scanzy subscription expired",
+    "Scanzy documentation",
+    "Scanzy technical help",
+    "Scanzy knowledge base",
+    "Scanzy video guide",
+    "Scanzy tutorial help",
+    "Scanzy premium support",
+    "Scanzy query form",
+    "Scanzy onboarding guide",
+    "Scanzy email not working",
+    "Scanzy AI report PDF",
+    "Scanzy insights guide",
+    "Scanzy score accuracy",
+    "Scanzy detection strength",
+    "Scanzy user manual",
+    "Scanzy AI user experience",
+  ],
+  openGraph: {
+    title: "Scanzy Help Center – AI Tools FAQ, Support & Guide",
+    description:
+      "Explore Scanzy AI's help center for frequently asked questions, setup guides, payment info, and support for detection and rewrite tools.",
+    url: "https://scanzy.fun/help",
+    siteName: "Scanzy AI",
+    type: "website",
+    images: [
+      {
+        url: "https://scanzy.fun/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Scanzy Help Center Open Graph Image",
+      },
+    ],
   },
-  {
-    title: 'Billing & Subscriptions',
-    description: 'How plans work, payment methods, and refunds.',
-    link: '/help/billing',
+  twitter: {
+    card: "summary_large_image",
+    title: "Scanzy AI Help & Support – FAQs, Tutorials, Guides",
+    description:
+      "Need help with Scanzy AI? Browse FAQs, common issues, guides, and contact support from the official Scanzy Help Center.",
+    images: ["https://scanzy.fun/og-image.png"],
   },
-  {
-    title: 'Troubleshooting',
-    description: 'Fix issues with scans, logins, or reports.',
-    link: '/help/troubleshooting',
+  alternates: {
+    canonical: "https://scanzy.fun/help",
   },
-];
-
-const guides = [
-  {
-    title: 'How to use Scanzy AI for university work',
-    summary: 'A step-by-step guide on checking essays and citations.',
-    link: '/help/scanzy-for-students',
-  },
-  {
-    title: 'Understanding your AI detection report',
-    summary: 'Learn how to interpret the results and what each score means.',
-    link: '/help/report-guide',
-  },
-];
-
-const faqs = [
-  {
-    question: 'How accurate is Scanzy AI?',
-    answer: 'Scanzy AI has a 94.3% F1-score and less than 4.6% false positives on real-world datasets.',
-  },
-  {
-    question: 'Is my text stored?',
-    answer: 'No — all analysis happens in-memory and is discarded immediately unless you save it manually.',
-  },
-  {
-    question: 'How do I cancel my subscription?',
-    answer: 'You can cancel anytime from your dashboard under “Billing”. Access continues until your billing period ends.',
-  },
-];
+};
 
 export default function HelpCenterPage() {
-  return (
-    <div className="max-w-5xl mx-auto px-4 py-16">
-        <BackButton/>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-10"
-      >
-        <h1 className="text-4xl font-bold">Help Center</h1>
-        <p className="text-gray-500 mt-2">Find answers, guides, and resources for Scanzy AI.</p>
-      </motion.div>
-
-      <div className="max-w-lg mx-auto mb-12">
-        {/* <Input placeholder="Search help articles..." className="rounded-xl px-4 py-3 shadow-md" /> */}
-      </div>
-
-      {/* Categories Section */}
-      <div className="grid md:grid-cols-3 gap-6 mb-16">
-        {helpCategories.map((cat, idx) => (
-          <Link
-            key={idx}
-            href={cat.link}
-            className="border  rounded-xl p-6 shadow-sm hover:shadow-md transition"
-          >
-            <h3 className="text-lg font-semibold">{cat.title}</h3>
-            <p className="text-sm text-gray-500 mt-2">{cat.description}</p>
-          </Link>
-        ))}
-      </div>
-
-      {/* Featured Guides */}
-      {/* <h2 className="text-xl font-semibold mb-6">Featured Guides</h2>
-      <div className="space-y-4 mb-16">
-        {guides.map((g, idx) => (
-          <Link
-            key={idx}
-            href={g.link}
-            className="block border-l-4 border-primary pl-4 py-2  rounded transition"
-          >
-            <h4 className="font-medium">{g.title}</h4>
-            <p className="text-sm text-gray-500">{g.summary}</p>
-          </Link>
-        ))}
-      </div> */}
-
-      {/* FAQ Section */}
-      <h2 className="text-xl font-semibold mb-6">Frequently Asked Questions</h2>
-      <Accordion type="single" collapsible className="space-y-4">
-        {faqs.map((faq, idx) => (
-          <AccordionItem key={idx} value={`faq-${idx}`} className="border rounded-lg px-4">
-            <AccordionTrigger className="text-base font-medium">{faq.question}</AccordionTrigger>
-            <AccordionContent className="text-gray-600">{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-
-      {/* Contact CTA */}
-      <div className="text-center mt-16 border-t pt-8">
-        <p className="text-gray-400 mb-2">Still need help?</p>
-        <Button variant={'outline'} className='w-[300px]'>
-
-        <Link
-          href="/contact"
-        //   className="bg-primary px-6 py-3 w-full rounded-full text-white font-semibold hover:bg-primary-dark transition"
-          >
-          Contact Us
-        </Link>
-            </Button>
-        <p className="mt-4 text-sm text-gray-500">Or email us at <a href="mailto:support@scanzy.ai" className="underline">support@scanzy.ai</a></p>
-      </div>
-    </div>
-  );
+  return <HelpCenterClient />;
 }

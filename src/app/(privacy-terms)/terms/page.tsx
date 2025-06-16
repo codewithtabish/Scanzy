@@ -1,7 +1,51 @@
 // pages/terms.tsx
 
 import BackButton from "@/components/custom/back-comp";
+import { Metadata } from "next";
 import React from "react";
+
+// ✅ Metadata for SEO
+export const metadata: Metadata = {
+  title: "Terms & Conditions – Scanzy AI",
+  description:
+    "Read the terms and conditions for using Scanzy AI's tools. Understand your rights, responsibilities, and legal usage terms.",
+  keywords: [
+    "Scanzy AI terms",
+    "terms and conditions",
+    "user agreement Scanzy",
+    "Scanzy AI usage policy",
+    "AI tool terms",
+    "terms of service",
+    "Scanzy platform rules",
+  ],
+  alternates: {
+    canonical: "https://scanzy.fun/terms",
+  },
+  openGraph: {
+    title: "Terms & Conditions – Scanzy AI",
+    description:
+      "Review the rules and guidelines for using Scanzy AI. Understand your legal rights and responsibilities.",
+    url: "https://scanzy.fun/terms",
+    siteName: "Scanzy AI",
+    images: [
+      {
+        url: "https://scanzy.fun/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Scanzy AI Terms & Conditions Image",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms & Conditions – Scanzy AI",
+    description:
+      "Please read our terms before using Scanzy AI. Know your responsibilities and our platform rules.",
+    images: ["https://scanzy.fun/og-image.png"],
+  },
+};
 
 export default function TermsPage() {
   return (
