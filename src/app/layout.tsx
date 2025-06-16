@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/custom/theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
+import Head from 'next/head'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -169,6 +170,19 @@ export default function RootLayout ({
   return (
     <ClerkProvider>
       <html lang='en'>
+        <Head>
+          {/* Extra meta tags not handled by Next metadata */}
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="author" content="TALHA TABISH - CODEWITHTABISH" />
+          <meta name="copyright" content="© 2025 Scanzy.fun" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="theme-color" content="#0ea5e9" />
+          <meta property="fb:app_id" content="YOUR_FACEBOOK_APP_ID" />
+          
+          {/* Optional icons */}
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        </Head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
