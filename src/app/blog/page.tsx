@@ -131,7 +131,7 @@ export default async function BlogListPage() {
       <div className="md:max-w-5xl mx-auto px-4 py-20">
         <h2 className="py-5 text-2xl font-bold">Our latest Articles</h2>
         <div className="grid md:max-w-6xl mx-auto grid-cols-1 md:grid-cols-3 gap-6">
-          {blogs.map((blog: Blog) => {
+          {blogs?.map((blog: Blog) => {
             const { id, title, slug, description, banner } = blog;
 
             const imageUrl = banner?.url
