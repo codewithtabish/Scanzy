@@ -2,8 +2,9 @@ import { checkAuthAndRedirectMain } from "@/actions/auth-redirect";
 import { AppSidebar } from "@/components/custom/dashboard/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
+
 const DashboardLayout = async({ children }: { children: React.ReactNode }) => {
-    await checkAuthAndRedirectMain()
+    // await checkAuthAndRedirectMain()
 
   return (
     <SidebarProvider>
