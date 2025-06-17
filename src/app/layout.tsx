@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/custom/theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
 import Head from 'next/head'
+import { checkAuthAndRedirectMain } from '@/actions/auth-redirect'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -162,11 +163,20 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout ({
+export  default async function RootLayout ({
+
   children
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}>) 
+
+
+
+{
+
+  await checkAuthAndRedirectMain()
+
+
   return (
     <ClerkProvider>
       <html lang='en'>
