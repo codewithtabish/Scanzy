@@ -1,9 +1,18 @@
-# *
+# Block all bots from crawling private dashboard pages
 User-agent: *
+Disallow: /dashboard/
+
+# Allow all other public routes
+Allow: /about
+Allow: /blog
+Allow: /help-center
+Allow: /terms
+Allow: /contact
+Allow: /privacy-policy
 Allow: /
 
 # Host
 Host: https://scanzy.fun
 
-# Sitemaps
+# Sitemap
 Sitemap: https://scanzy.fun/sitemap.xml

@@ -17,7 +17,7 @@ import React from 'react'
 const HomePage = async() => {
   // await checkAuthAndRedirect()
   return (
-    <div className='md:max-w-6xl mx-auto md:px-3 px-5'>
+    <div className='md:max-w-6xl mx-auto md:px-4 px-5'>
 
       <Header/>
       <div className='space-y-20'>
