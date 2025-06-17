@@ -52,7 +52,7 @@ export async function getBlogs(): Promise<any> {
 
   try {
     const cached = await redis.get<Blog[]>(cacheKey);
-    console.log('The blog are comming from ',cached)
+    // console.log('The blog are comming from ',cached)
     if (cached) return cached;
 
 
