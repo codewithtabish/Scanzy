@@ -5,6 +5,7 @@ import { redis } from '@/lib/redis';
 export async function POST(req: Request) {
   try {
     let body = {};
+    console.log('yes I am here')
 
     // Try to parse JSON if it exists
     try {
