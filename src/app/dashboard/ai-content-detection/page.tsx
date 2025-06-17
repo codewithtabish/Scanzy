@@ -88,6 +88,10 @@ export const metadata:Metadata = {
   alternates: {
     canonical: 'https://scanzy.fun/ai-content-detection',
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 
