@@ -57,27 +57,29 @@ function renderRichContent(blocks: any[]) {
       );
     }
 
+    
     if (/^```/.test(rawText)) {
-      const match = rawText.match(/^```([a-zA-Z0-9]+)?\s*\n?([\s\S]*?)\n?```$/);
-      const lang = match?.[1] || "text";
-      const code = match?.[2]?.trim() || rawText.replace(/```/g, "").trim();
+  const match = rawText.match(/^```(\w+)?\s*\n([\s\S]*?)\n```$/);
+  const lang = match?.[1] || "text";
+  const code = match?.[2] || rawText.replace(/```/g, "").trim();
 
-      return (
-        <pre
-          key={i}
-          className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
-          style={{
-            fontFamily: "monospace",
-            whiteSpace: "pre",
-            margin: 0,
-          }}
-        >
-          <code className={`language-${lang}`} style={{ display: "block" }}>
-            {code}
-          </code>
-        </pre>
-      );
-    }
+  return (
+    <pre
+      key={i}
+      className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
+      style={{
+        fontFamily: "monospace",
+        whiteSpace: "pre", // keep exact formatting
+        overflowX: "auto",
+      }}
+    >
+      <code className={`language-${lang}`} style={{ display: "block" }}>
+        {code}
+      </code>
+    </pre>
+  );
+}
+
 
     const oneLineLangMatch = rawText.match(
       /^(js|ts|python|html|css|json|bash|sh)\n(.+)/i
