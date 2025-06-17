@@ -20,13 +20,18 @@ const HomePage = async() => {
     <div className='md:max-w-6xl mx-auto md:px-4 px-5'>
 
       <Header/>
-      <div className='space-y-20'>
-
+<div className="space-y-10 sm:space-y-14 md:space-y-20">
+  <div>
       <Hero/>
       <HeroVideo/>
+
+  </div>
+   <div>
       <HowItWorks/>
       <StatsSection/>
       <AnimatedBeamDemo/>
+
+   </div>
       <FeaturesSection/>
       <FeedbackSection/>
       <FAQ/>
