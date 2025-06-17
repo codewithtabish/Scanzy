@@ -4,7 +4,6 @@ import './globals.css'
 import { ThemeProvider } from '@/components/custom/theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
 import Head from 'next/head'
-import { checkAuthAndRedirectMain } from '@/actions/auth-redirect'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -174,7 +173,6 @@ export  default async function RootLayout ({
 
 {
 
-  await checkAuthAndRedirectMain()
 
 
   return (
