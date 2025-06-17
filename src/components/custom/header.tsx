@@ -85,18 +85,14 @@ const Header = () => {
           isScrolled ? 'max-w-4xl border-2 rounded-full p-5 mt-10' : 'max-w-6xl'
         }`}
       >
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/images/header-logo.png"
-            alt="header-logo"
-            width={40}
-            height={40}
-            className="object-cover w-10 h-10"
-          />
-          <h1 className="font-bold text-lg">
-            SCA<span className="italic text-primary">N</span>zy -
-            <strong className="ml-1 px-2 text-sm rotate-180 italic rounded-md">AI</strong>
-          </h1>
+             <Link href="/" className="flex items-center gap-3">
+        <Image
+  src="/logo.png"
+  alt="header-logo"
+  width={100}
+  height={100}
+  className="object-cover block md:hidden lg:block h-[140px] w-[140px] absolute"
+/>
         </Link>
 
         {pathName === '/' && (
@@ -173,6 +169,16 @@ const Header = () => {
                     {id.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())}
                   </a>
                 ))}
+                <SignedIn>
+                  <UserButton appearance={{ baseTheme: clerkTheme }} />
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton>
+                    <Badge className="cursor-pointer w-fit" variant="outline">
+                      <span>Login</span>
+                    </Badge>
+                  </SignInButton>
+                </SignedOut>
                 <Button size="sm" className="mt-4">
                   Try for free
                 </Button>
