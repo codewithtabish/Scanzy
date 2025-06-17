@@ -57,28 +57,33 @@ function renderRichContent(blocks: any[]) {
       );
     }
 
-    
-    if (/^```/.test(rawText)) {
-  const match = rawText.match(/^```(\w+)?\s*\n([\s\S]*?)\n```$/);
+if (/^```/.test(rawText) && rawText.trim().endsWith("```")) {
+  const match = rawText.match(/^```(\w+)?\s*\n?([\s\S]*?)\n?```$/);
   const lang = match?.[1] || "text";
-  const code = match?.[2] || rawText.replace(/```/g, "").trim();
+  const code = match?.[2]?.trim() || "";
 
   return (
-    <pre
-      key={i}
-      className="bg-gray-900 text-white text-sm rounded-md p-4 overflow-x-auto my-4"
-      style={{
-        fontFamily: "monospace",
-        whiteSpace: "pre", // keep exact formatting
-        overflowX: "auto",
-      }}
-    >
-      <code className={`language-${lang}`} style={{ display: "block" }}>
-        {code}
-      </code>
-    </pre>
+    <div key={i} className="code-block-wrapper">
+      <pre
+        className={`language-${lang} text-white text-sm overflow-x-auto`}
+        style={{
+          fontFamily: "monospace",
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+          lineHeight: "1.5",
+          fontSize: "0.875rem",
+          backgroundColor: "inherit",
+          margin: 0,
+        }}
+      >
+        <code style={{ backgroundColor: "inherit", display: "block" }}>
+          {code}
+        </code>
+      </pre>
+    </div>
   );
 }
+
 
 
     const oneLineLangMatch = rawText.match(
