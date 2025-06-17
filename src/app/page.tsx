@@ -1,5 +1,4 @@
 'use server'
-import { checkAuthAndRedirect } from '@/actions/auth-redirect'
 import { AnimatedBeamDemo } from '@/components/custom/animated-beams'
 import CallToAction from '@/components/custom/call-to-action'
 import FAQ from '@/components/custom/faq'

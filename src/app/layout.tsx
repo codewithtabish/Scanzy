@@ -4,6 +4,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/custom/theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
 import Head from 'next/head'
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -202,6 +203,7 @@ export  default async function RootLayout ({
           >
             <main className='  dark:text-gray-300'>
               {children}
+              <Analytics />
             </main>
           </ThemeProvider>
         </body>
