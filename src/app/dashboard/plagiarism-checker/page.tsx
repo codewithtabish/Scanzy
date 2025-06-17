@@ -84,10 +84,10 @@ export const metadata:Metadata = {
   alternates: {
     canonical: 'https://scanzy.fun/plagiarism-checker',
   },
-  robots: {
-  index: false,
-  follow: false,
-}
+//   robots: {
+//   index: false,
+//   follow: false,
+// }
 
 };
 

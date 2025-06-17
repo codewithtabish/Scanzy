@@ -68,10 +68,10 @@ export const metadata: Metadata = {
       "Your personalized Scanzy AI dashboard to manage tasks, projects, and AI content insights.",
     images: ["https://scanzy.fun/og-image.png"],
   },
-  robots: {
-  index: false,
-  follow: false,
-}
+//   robots: {
+//   index: false,
+//   follow: false,
+// }
 
 };
 
