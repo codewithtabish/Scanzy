@@ -140,7 +140,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <section className="mb-32 text-gray-400">
-      <BackButton bg="" />
+      <BackButton  />
 
       {/* Google Maps Embed */}
       <div className="relative h-[300px] overflow-hidden">
