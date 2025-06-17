@@ -1,14 +1,14 @@
-'use server';
+// 'use server';
 
-import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
+// import { auth } from '@clerk/nextjs/server';
+// import { redirect } from 'next/navigation';
 
-export async function checkAuthAndRedirectMain() {
-  const { userId } =await auth();
+// export async function checkAuthAndRedirectMain() {
+//   const { userId } =await auth();
 
-  if (userId) {
-    redirect('/dashboard');
-  } else {
-    redirect('/');
-  }
-}
+//   if (userId) {
+//     redirect('/dashboard');
+//   } else {
+//     redirect('/');
+//   }
+// }
