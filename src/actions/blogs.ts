@@ -23,8 +23,8 @@ export interface Blog {
 // ✅ Fetch all blogs
 export const getAllBlogs = async (): Promise<Blog[]> => {
   try {
-    const res = await fetch('http://localhost:1337/api/blogs?populate=*', {
-      cache: 'no-cache',
+    const res = await fetch('https://scanzy-ai-copy.onrender.com/api/blogs?populate=*', {
+      // cache: 'no-cache',
     });
 
     if (!res.ok) throw new Error('Failed to fetch blogs');
@@ -59,9 +59,13 @@ export const getAllBlogs = async (): Promise<Blog[]> => {
 // ✅ Fetch single blog by slug
 export const getSingleBlog = async (slug: string): Promise<Blog | null> => {
   try {
-    const res = await fetch(`http://localhost:1337/api/blogs?filters[slug][$eq]=${slug}&populate=*`, {
-      cache: 'no-cache',
-    });
+    // const res = await fetch(`http://localhost:1337/api/blogs?filters[slug][$eq]=${slug}&populate=*`, {
+    //   // cache: 'no-cache',
+    // });
+    const res = await fetch(`https://scanzy-ai-copy.onrender.com/api/blogs?filters[slug][$eq]=${slug}&populate=*`, {
+  // cache: 'no-cache',
+});
+
 
     if (!res.ok) throw new Error('Failed to fetch single blog');
 
