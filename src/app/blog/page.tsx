@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import BackButton from "@/components/custom/back-comp";
 import Image from "next/image";
@@ -60,7 +59,7 @@ export const metadata: Metadata = {
 
 export default async function BlogListPage() {
   const blogs = await getAllBlogs();
-  console.log('Here the data is ',blogs)
+  console.log("Here the data is", blogs);
 
   return (
     <>
@@ -81,40 +80,65 @@ export default async function BlogListPage() {
 
       <div className="md:max-w-5xl mx-auto px-4 py-20">
         <h2 className="py-5 text-2xl font-bold">Our Latest Articles</h2>
-        <div className="grid md:max-w-6xl mx-auto grid-cols-1 md:grid-cols-3 gap-6">
-          {blogs?.map((blog: Blog) => {
-            const { id, title, slug, description, cloudinarBannerUrl } = blog;
 
-            const imageUrl =
-              cloudinarBannerUrl ||
-              "https://5bl4nawh55.ufs.sh/f/aETJ5rHKEzpCgFmmwV1kwb2pQ51rzEMsL8PjH9XNi6ngqKoa";
-
-            return (
-              <Link
-                key={id}
-                href={`/blog/${slug}`}
-                className="border rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+        {blogs?.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="flex justify-center mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-24 w-24 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <Image
-                  src={imageUrl}
-                  alt={title}
-                  width={800}
-                  height={400}
-                  className="w-full h-[250px] object-cover"
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
-                <div className="p-4">
-                  <h2 className="text-sm font-bold">{title}</h2>
-                  <p
-                    className="text-sm text-gray-600 line-clamp-3 min-h-[4.5em] mt-2"
-                    aria-label="Blog description"
-                  >
-                    {description}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+              </svg>
+            </div>
+            <p className="text-lg text-gray-500">
+              No blog articles available right now. Please check back later!
+            </p>
+          </div>
+        ) : (
+          <div className="grid md:max-w-6xl mx-auto grid-cols-1 md:grid-cols-3 gap-6">
+            {blogs.map((blog: Blog) => {
+              const { id, title, slug, description, cloudinarBannerUrl } = blog;
+
+              const imageUrl =
+                cloudinarBannerUrl ||
+                "https://5bl4nawh55.ufs.sh/f/aETJ5rHKEzpCgFmmwV1kwb2pQ51rzEMsL8PjH9XNi6ngqKoa";
+
+              return (
+                <Link
+                  key={id}
+                  href={`/blog/${slug}`}
+                  className="border rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+                >
+                  <Image
+                    src={imageUrl}
+                    alt={title}
+                    width={800}
+                    height={400}
+                    className="w-full h-[250px] object-cover"
+                  />
+                  <div className="p-4">
+                    <h2 className="text-sm font-bold">{title}</h2>
+                    <p
+                      className="text-sm text-gray-600 line-clamp-3 min-h-[4.5em] mt-2"
+                      aria-label="Blog description"
+                    >
+                      {description}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );
