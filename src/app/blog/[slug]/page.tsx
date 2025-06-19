@@ -6,70 +6,74 @@ import { getSingleBlog } from "@/actions/blogs";
 import RichRenderWrapper from "@/components/custom/blog/rich-render-wrapper";
 import ShareButtons from "@/components/custom/blog/share-buttons";
 
-interface BlogPageProps {
-  params: {
-    slug: string;
+// ✅ Metadata generator
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = await getSingleBlog(slug);
+  if (!blog) return {};
+
+  const metaTitle = blog.metaTitle || blog.title;
+  const metaDescription = blog.metaDescription || blog.description;
+  const metaImage = blog.metaImage || blog.cloudinarBannerUrl;
+  const url = `https://scanzy.fun/blog/${slug}`;
+
+  return {
+    title: metaTitle,
+    description: metaDescription,
+    keywords: blog.keywords?.split(",") || [],
+    alternates: {
+      canonical: blog.canonicalURL || url,
+    },
+    openGraph: {
+      title: blog.ogTitle || metaTitle,
+      description: blog.ogDescription || metaDescription,
+      url,
+      siteName: "Scanzy AI",
+      type: "article",
+      locale: "en_US",
+      images: metaImage
+        ? [
+            {
+              url: metaImage,
+              width: 1200,
+              height: 630,
+              alt: blog.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: (blog.twitterCardType as
+        | "summary_large_image"
+        | "summary"
+        | "player"
+        | "app") || "summary_large_image",
+      title: blog.ogTitle || metaTitle,
+      description: blog.ogDescription || metaDescription,
+      images: metaImage ? [metaImage] : [],
+    },
   };
 }
 
-// ✅ SEO metadata generation
-// export async function generateMetadata({
-//   params,
-// }: BlogPageProps): Promise<Metadata> {
-//   const blog = await getSingleBlog(params.slug);
-//   if (!blog) return {};
-
-//   const metaTitle = blog.metaTitle || blog.title;
-//   const metaDescription = blog.metaDescription || blog.description;
-//   const metaImage = blog.metaImage || blog.cloudinarBannerUrl;
-//   const url = `https://scanzy.fun/blog/${params.slug}`;
-
-//   return {
-//     title: metaTitle,
-//     description: metaDescription,
-//     keywords: blog.keywords?.split(",") || [],
-//     alternates: {
-//       canonical: blog.canonicalURL || url,
-//     },
-//     openGraph: {
-//       title: blog.ogTitle || metaTitle,
-//       description: blog.ogDescription || metaDescription,
-//       url,
-//       type: "article",
-//       images: metaImage
-//         ? [
-//             {
-//               url: metaImage,
-//               width: 1200,
-//               height: 630,
-//               alt: blog.title,
-//             },
-//           ]
-//         : [],
-//     },
-//     twitter: {
-//       card: (blog.twitterCardType as
-//         | "summary_large_image"
-//         | "summary"
-//         | "player"
-//         | "app") || "summary_large_image",
-//       title: blog.ogTitle || metaTitle,
-//       description: blog.ogDescription || metaDescription,
-//       images: metaImage ? [metaImage] : [],
-//     },
-//   };
-// }
-
-// ✅ Main Blog Page Component
-export default async function BlogPage({ params }: BlogPageProps) {
-  const blog = await getSingleBlog(params.slug);
+// ✅ Blog page component using async `params`
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const blog = await getSingleBlog(slug);
   if (!blog) return notFound();
 
   const bannerUrl =
     blog.cloudinarBannerUrl ||
     "https://5bl4nawh55.ufs.sh/f/aETJ5rHKEzpCgFmmwV1kwb2pQ51rzEMsL8PjH9XNi6ngqKoa";
 
-  const blogUrl = `https://scanzy.fun/blog/${params.slug}`;
+  const blogUrl = `https://scanzy.fun/blog/${slug}`;
 
   return (
     <div className="md:max-w-3xl mx-auto px-4 py-10">

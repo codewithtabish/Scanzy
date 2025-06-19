@@ -30,7 +30,7 @@ export const getAllBlogs = async (): Promise<Blog[]> => {
     if (!res.ok) throw new Error('Failed to fetch blogs');
 
     const json = await res.json();
-    console.log('Fetched blogs:', json);
+    // console.log('Fetched blogs:', json);
 
     return json.data
       .filter((item: any) => item && item.title && item.slug) // ✅ skip empty entries

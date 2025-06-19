@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 
 export default async function BlogListPage() {
   const blogs = await getAllBlogs();
-  console.log("Here the data is", blogs);
+  // console.log("Here the data is", blogs);
 
   return (
     <>
