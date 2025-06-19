@@ -1,5 +1,7 @@
 'use server';
 
+import { redis } from "@/lib/redis";
+
 export interface Blog {
   id: number;
   title: string;
@@ -20,20 +22,17 @@ export interface Blog {
   publishedAt?: string;
 }
 
-// ✅ Fetch all blogs
 export const getAllBlogs = async (): Promise<Blog[]> => {
   try {
-    const res = await fetch('https://scanzy-ai-copy.onrender.com/api/blogs?populate=*', {
-      // cache: 'no-cache',
-    });
+    const cached = await redis.get('fetch_all_blogs');
+    if (cached) return cached as Blog[];
 
+    const res = await fetch('https://scanzy-ai-copy.onrender.com/api/blogs?populate=*');
     if (!res.ok) throw new Error('Failed to fetch blogs');
 
     const json = await res.json();
-    // console.log('Fetched blogs:', json);
-
-    return json.data
-      .filter((item: any) => item && item.title && item.slug) // ✅ skip empty entries
+    const blogs = json.data
+      .filter((item: any) => item && item.title && item.slug)
       .map((item: any) => ({
         id: item.id,
         title: item.title,
@@ -53,26 +52,31 @@ export const getAllBlogs = async (): Promise<Blog[]> => {
         updatedAt: item.updatedAt,
         publishedAt: item.publishedAt,
       }));
+
+    await redis.set('fetch_all_blogs', blogs); // cache for 10 minutes
+    return blogs;
   } catch (err) {
     console.error('getAllBlogs error:', err);
     return [];
   }
 };
 
-// ✅ Fetch single blog by slug
+
+
+
 export const getSingleBlog = async (slug: string): Promise<Blog | null> => {
   try {
-    const res = await fetch(`https://scanzy-ai-copy.onrender.com/api/blogs?filters[slug][$eq]=${slug}&populate=*`, {
-      // cache: 'no-cache',
-    });
+    const cached = await redis.get(`blog_${slug}`);
+    if (cached) return cached as Blog;
 
+    const res = await fetch(`https://scanzy-ai-copy.onrender.com/api/blogs?filters[slug][$eq]=${slug}&populate=*`);
     if (!res.ok) throw new Error('Failed to fetch single blog');
 
     const json = await res.json();
     const item = json.data[0];
     if (!item) return null;
 
-    return {
+    const blog: Blog = {
       id: item.id,
       title: item.title,
       slug: item.slug,
@@ -91,6 +95,9 @@ export const getSingleBlog = async (slug: string): Promise<Blog | null> => {
       updatedAt: item.updatedAt,
       publishedAt: item.publishedAt,
     };
+
+    await redis.set(`blog_${slug}`, blog); // cache for 10 minutes
+    return blog;
   } catch (err) {
     console.error('getSingleBlog error:', err);
     return null;

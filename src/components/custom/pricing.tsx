@@ -61,9 +61,9 @@ const Pricing = () => {
       </header>
 
       <div className='flex justify-end mb-6'>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+        {/* <SignedIn> */}
+          {/* <UserButton /> */}
+        {/* </SignedIn> */}
         <SignedOut>
           <SignInButton>
             <Badge className='cursor-pointer' variant='outline'>

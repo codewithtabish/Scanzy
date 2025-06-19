@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     // Clear the blog cache
-    await redis.del('blogs:all');
+    await redis.del('fetch_all_blogs');
     console.log('Cleared the Redis blog cache.');
 
     return NextResponse.json({ success: true, message: 'Blog cache cleared' });
