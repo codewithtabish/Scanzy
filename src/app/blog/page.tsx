@@ -4,62 +4,65 @@ import Image from "next/image";
 import Link from "next/link";
 import { Blog, getAllBlogs } from "@/actions/blogs";
 
-// export const metadata: Metadata = {
-//   title: "Blogs – AI Insights, Content Tools & Plagiarism Help | Scanzy AI",
-//   description:
-//     "Explore expert articles on AI-generated content detection, plagiarism scanning, grammar checking, and content rewriting – stay informed with Scanzy AI blogs.",
-//   keywords: [
-//     "Scanzy AI Blogs", "AI detection articles", "Plagiarism blog posts", "AI content scanner",
-//     "Free AI detector info", "Check AI writing blog", "AI vs human writing", "Detect ChatGPT content",
-//     "AI tool updates", "AI blog posts", "Content originality insights", "Scanzy AI news",
-//     "Plagiarism prevention tips", "AI-powered writing", "Academic integrity AI", "SEO writing AI",
-//     "Rewrite blog posts", "Fix grammar online", "Content summarizer blogs", "Educational blog AI tools",
-//     "Paraphrasing and AI", "Blogging with AI tools", "Text rewriting advice", "AI-generated article check",
-//     "Detect GPT content", "Writing assistant AI blogs", "Grammar and clarity tips",
-//     "Improve AI detection accuracy", "Best AI content tools", "How AI checks writing",
-//     "Plagiarism risks explained", "AI writing checker guides", "Free plagiarism tools explained",
-//     "Content scanner SaaS", "ChatGPT article detection", "Free writing resources", "GPT4 content detection",
-//     "Summarizer tool blog", "Rewrite content SEO", "Detect fake AI content", "Academic use of AI",
-//     "Copywriting AI help", "Student writing tools", "Teacher content tools", "Blog SEO tips using AI",
-//     "Next.js AI blog setup", "Technical SEO for AI tools", "AI education tools", "Content analysis SaaS",
-//     "Best AI grammar fixers", "Scan AI blog writing", "Blogging with GPT tools", "Rewrite GPT4 content",
-//     "GPT detector tools", "Online content quality tips", "Scanzy AI blog updates", "How to check AI essays",
-//     "AI blog assistant", "Human vs AI blogs", "Scanzy blog news", "Detect AI in student work",
-//     "Free blog writing help", "Plagiarism help for bloggers", "Rewrite articles for originality",
-//     "Educational AI articles", "Writing improvement AI", "Content scanner for blogs"
-//   ],
-//   openGraph: {
-//     title: "Blogs – AI Insights & Plagiarism Detection Guides | Scanzy AI",
-//     description:
-//       "Stay up to date with Scanzy AI’s expert blog – covering AI detection, plagiarism prevention, writing help, and advanced AI tools.",
-//     url: "https://scanzy.fun/blogs",
-//     siteName: "Scanzy AI",
-//     type: "website",
-//     locale: "en_US",
-//     images: [
-//       {
-//         url: "https://scanzy.fun/og-image.png",
-//         width: 1200,
-//         height: 630,
-//         alt: "Scanzy AI Blog Open Graph Image",
-//       },
-//     ],
-//   },
-//   twitter: {
-//     card: "summary_large_image",
-//     title: "Scanzy AI Blog – AI Detection, Rewriting & SEO Tools",
-//     description:
-//       "Learn about content originality, AI writing analysis, and how to use Scanzy AI to check and improve your content.",
-//     images: ["https://scanzy.fun/og-image.png"],
-//   },
-//   alternates: {
-//     canonical: "https://scanzy.fun/blogs",
-//   },
-// };
+export const metadata: Metadata = {
+  title: "Blogs – AI Insights, Content Tools & Plagiarism Help | Scanzy AI",
+  description:
+    "Explore expert articles on AI-generated content detection, plagiarism scanning, grammar checking, and content rewriting – stay informed with Scanzy AI blogs.",
+  keywords: [
+    "Scanzy AI Blogs", "AI detection articles", "Plagiarism blog posts", "AI content scanner",
+    "Free AI detector info", "Check AI writing blog", "AI vs human writing", "Detect ChatGPT content",
+    "AI tool updates", "AI blog posts", "Content originality insights", "Scanzy AI news",
+    "Plagiarism prevention tips", "AI-powered writing", "Academic integrity AI", "SEO writing AI",
+    "Rewrite blog posts", "Fix grammar online", "Content summarizer blogs", "Educational blog AI tools",
+    "Paraphrasing and AI", "Blogging with AI tools", "Text rewriting advice", "AI-generated article check",
+    "Detect GPT content", "Writing assistant AI blogs", "Grammar and clarity tips",
+    "Improve AI detection accuracy", "Best AI content tools", "How AI checks writing",
+    "Plagiarism risks explained", "AI writing checker guides", "Free plagiarism tools explained",
+    "Content scanner SaaS", "ChatGPT article detection", "Free writing resources", "GPT4 content detection",
+    "Summarizer tool blog", "Rewrite content SEO", "Detect fake AI content", "Academic use of AI",
+    "Copywriting AI help", "Student writing tools", "Teacher content tools", "Blog SEO tips using AI",
+    "Next.js AI blog setup", "Technical SEO for AI tools", "AI education tools", "Content analysis SaaS",
+    "Best AI grammar fixers", "Scan AI blog writing", "Blogging with GPT tools", "Rewrite GPT4 content",
+    "GPT detector tools", "Online content quality tips", "Scanzy AI blog updates", "How to check AI essays",
+    "AI blog assistant", "Human vs AI blogs", "Scanzy blog news", "Detect AI in student work",
+    "Free blog writing help", "Plagiarism help for bloggers", "Rewrite articles for originality",
+    "Educational AI articles", "Writing improvement AI", "Content scanner for blogs"
+  ],
+  openGraph: {
+    title: "Blogs – AI Insights & Plagiarism Detection Guides | Scanzy AI",
+    description:
+      "Stay up to date with Scanzy AI’s expert blog – covering AI detection, plagiarism prevention, writing help, and advanced AI tools.",
+    url: "https://scanzy.fun/blogs",
+    siteName: "Scanzy AI",
+    type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "https://scanzy.fun/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Scanzy AI Blog Open Graph Image",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Scanzy AI Blog – AI Detection, Rewriting & SEO Tools",
+    description:
+      "Learn about content originality, AI writing analysis, and how to use Scanzy AI to check and improve your content.",
+    images: ["https://scanzy.fun/og-image.png"],
+  },
+  alternates: {
+    canonical: "https://scanzy.fun/blogs",
+  },
+};
 
 export default async function BlogListPage() {
   const blogs = await getAllBlogs();
   // console.log("Here the data is", blogs);
+
+  // 322794
+  // cs@gopayfast.com
 
   return (
     <>
