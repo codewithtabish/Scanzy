@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/custom/theme-provider'
 import { ClerkProvider } from '@clerk/nextjs'
 import Head from 'next/head'
 import { Analytics } from "@vercel/analytics/next"
+import Script from 'next/script'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -187,10 +188,24 @@ export  default async function RootLayout ({
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
           <meta name="theme-color" content="#0ea5e9" />
           <meta property="fb:app_id" content="YOUR_FACEBOOK_APP_ID" />
+          {/* <Script
+          src="https://app.lemonsqueezy.com/js/lemon.js"
+          strategy="afterInteractive"
+          onLoad={() => {
+            // Optional: extra initialization
+            if (typeof window !== 'undefined' && (window as any).LemonSqueezy) {
+              ;(window as any).LemonSqueezy.Setup({})
+            }
+          }}
+        /> */}
+          {/* <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script> */}
+
+         {/* <Script src="https://app.lemonsqueezy.com/js/lemon.js" strategy="afterInteractive" /> */}
           
           {/* Optional icons */}
           <link rel="icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
         </Head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
