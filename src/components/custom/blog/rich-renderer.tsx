@@ -187,7 +187,7 @@ export default function RichContentRenderer({ blocks }: { blocks: any[] }) {
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                   }}
-                  className="rounded-md w-full max-h-[400px] object-cover"
+                  className="rounded-md w-[75%] mx-auto max-h-[300px] object-cover"
                 />
               </div>
             );
